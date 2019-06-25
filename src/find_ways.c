@@ -1,37 +1,37 @@
 #include "lem_in.h"
 
-_Bool		**np_init(void)
+_Bool		**init_ways(void)
 {
 	_Bool	**n;
 	int		a;
 
 	a = 0;
-	if (!(n = (_Bool**)malloc(sizeof(_Bool*) * g_info->n_rooms)))
-		error();
-	while (a < g_info->n_rooms)
+	if (!(n = (_Bool**)malloc(sizeof(_Bool*) * g_lem_in->rooms)))
+		termination();
+	while (a < g_lem_in->rooms)
 	{
-		if (!(n[a] = (_Bool*)malloc(sizeof(_Bool) * (g_info->n_rooms))))
+		if (!(n[a] = (_Bool*)malloc(sizeof(_Bool) * (g_lem_in->rooms))))
 		{
 			while (--a >= 0)
 				free(n[a]);
-			error();
+			termination();
 		}
-		ft_bzero(n[a], sizeof(char) * g_info->n_rooms);
+		ft_bzero(n[a], sizeof(char) * g_lem_in->rooms);
 		a++;
 	}
 	return (n);
 }
 
-void		np_cpy(void)
+void		cpy_ways(void)
 {
 	int		i;
 	int		j;
 
 	i = 0;
-	while (i < g_info->n_rooms)
+	while (i < g_lem_in->rooms)
 	{
 		j = 0;
-		while (j < g_info->n_rooms)
+		while (j < g_lem_in->rooms)
 		{
 			g_mnp[i][j] = g_np[i][j];
 			j++;
@@ -62,20 +62,20 @@ void		get_residual_network(void)
 	int		j;
 
 	i = 0;
-	while (i < g_info->n_rooms)
+	while (i < g_lem_in->rooms)
 	{
 		j = 0;
-		while (j < g_info->n_rooms)
+		while (j < g_lem_in->rooms)
 		{
-			if (g_info->links[i][j] && (int)g_np[i][j])
-				g_info->links[i][j] = FALSE;
+			if (g_lem_in->links[i][j] && (int)g_np[i][j])
+				g_lem_in->links[i][j] = FALSE;
 			j++;
 		}
 		i++;
 	}
 }
 
-int			find_np(void)
+int			find_ways(void)
 {
 	t_room	*path;
 

@@ -8,9 +8,9 @@ int			get_lenght(int i)
 
 	from = i;
 	len = 1;
-	while (from != (g_info->n_rooms - 1))
+	while (from != (g_lem_in->rooms - 1))
 	{
-		to = g_info->n_rooms - 1;
+		to = g_lem_in->rooms - 1;
 		while (to >= 0)
 		{
 			if (g_np[from][to] == TRUE)
@@ -25,13 +25,13 @@ int			get_lenght(int i)
 	return (len);
 }
 
-void		suurballe_clean(void)
+void		update_ways(void)
 {
 	int		i;
 	int		j;
 
 	i = 0;
-	while (i < g_info->n_rooms)
+	while (i < g_lem_in->rooms)
 	{
 		j = i;
 		while (j >= 0)
@@ -47,12 +47,12 @@ void		suurballe_clean(void)
 	}
 }
 
-int			perfomance_formula(int sum_len, int n_ants, int n_paths)
+int			perfomance(int sum_len, int ants, int n_paths)
 {
 	int steps;
 
-	steps = (sum_len + n_ants) / n_paths;
-	if (n_ants % n_paths)
+	steps = (sum_len + ants) / n_paths;
+	if (ants % n_paths)
 		return (steps);
 	else
 		return (steps + 1);
@@ -67,7 +67,7 @@ int			check_performance(void)
 	i = 0;
 	sum_len = 0;
 	counter = 0;
-	while (i < g_info->n_rooms)
+	while (i < g_lem_in->rooms)
 	{
 		if (g_np[0][i] == TRUE)
 		{
@@ -76,29 +76,29 @@ int			check_performance(void)
 		}
 		i++;
 	}
-	return (perfomance_formula(sum_len, g_info->n_ants, counter));
+	return (perfomance(sum_len, g_lem_in->ants, counter));
 }
 
-void		find_mnp(void)
+void		min_ways(void)
 {
 	int		error;
 	int		performance;
 	int		min_performance;
 
 	error = ERROR;
-	g_np = np_init();
-	g_mnp = np_init();
+	g_np = init_ways();
+	g_mnp = init_ways();
 	min_performance = MAX_INT;
 	while (error)
 	{
-		if (!find_np())
+		if (!find_ways())
 			break ;
-		suurballe_clean();
+		update_ways();
 		get_residual_network();
 		performance = check_performance();
 		if (performance < min_performance)
 		{
-			np_cpy();
+			cpy_ways();
 			min_performance = performance;
 		}
 		else

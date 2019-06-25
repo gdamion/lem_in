@@ -15,10 +15,10 @@ void		q_push(t_room *q, int new_id, int prev_id)
 {
 	while (q->next)
 		q = q->next;
-	q->next = q_create(new_id, prev_id, q);
+	q->next = init_queue(new_id, prev_id, q);
 }
 
-_Bool		q_pop(t_room **q)
+_Bool		queue_pop(t_room **q)
 {
 	t_room	*next_el;
 	t_room	*prev_el;
@@ -37,7 +37,7 @@ _Bool		q_pop(t_room **q)
 		return (FALSE);
 }
 
-t_room		*q_create(int new_id, int prev_id, t_room *prev)
+t_room		*init_queue(int new_id, int prev_id, t_room *prev)
 {
 	t_room	*q;
 	t_room	*buf;
@@ -50,11 +50,11 @@ t_room		*q_create(int new_id, int prev_id, t_room *prev)
 			prev = prev->prev;
 			free(buf);
 		}
-		error();
+		termination();
 	}
-	q->id = new_id;
-	q->from = prev_id;
 	q->next = NULL;
+	q->id = new_id;
 	q->prev = prev;
+	q->from = prev_id;
 	return (q);
 }

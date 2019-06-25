@@ -31,5 +31,5 @@ void			print_steps(t_pathkit paths, int move, int id, int ants_start)
 	ants_end = ants_start + squad - 1;
 	while (ants_start <= ants_end)
 		ft_printf("L%d-%s ", ants_start++,
-		g_info->nodes[paths.paths[id].room[end_room-- - 1]]->name);
+		g_lem_in->nodes[paths.paths[id].room[end_room-- - 1]]->name);
 }

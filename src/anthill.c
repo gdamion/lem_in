@@ -71,7 +71,7 @@ static void	fill_nodes(t_node **nodes, t_lst *rms, char **names, t_valid *map)
 	*(++names) = NULL;
 }
 
-static int	rewrite_to_inf(t_valid *map, t_inf *inf)
+static int	convert(t_valid *map, t_lem_in *inf)
 {
 	int		p;
 	_Bool	**lp;
@@ -90,37 +90,36 @@ static int	rewrite_to_inf(t_valid *map, t_inf *inf)
 	}
 	fill_nodes(inf->nodes, map->rooms, map->names, map);
 	if (!fill_links(inf->links, map->links, map->names, map->num_r))
-		error();
+		termination();
 	inf->data = map->data;
-	inf->n_rooms = map->num_r;
+	inf->rooms = map->num_r;
 	return (1);
 }
 
-t_inf		*read_map(void)
+t_lem_in		*get_anthill(void)
 {
-	t_valid *map;
-	t_inf	*inf;
-	char	*line;
-	int		stat;
+	t_valid		*map;
+	t_lem_in	*lem_in;
+	char		*line;
+	int			stat;
 
-	map = NULL;
+	if (!(lem_in = malloc(sizeof(t_lem_in))))
+		termination();
+	ft_bzero(lem_in, sizeof(t_lem_in));
 	if (!(map = ft_memalloc(sizeof(t_valid))))
-		error();
-	if (!(inf = malloc(sizeof(t_inf))))
-		error();
+		termination();
 	ft_bzero(map, sizeof(t_valid));
-	ft_bzero(inf, sizeof(t_inf));
 	while ((stat = get_next_line(0, &line)) > 0 && check_comment(line) > 0)
 		push_elem(line, &map->data);
 	if (stat < 1 || !is_int(line))
-		error();
-	if ((inf->n_ants = ft_atoi(line)) < 1)
-		error();
+		termination();
+	if ((lem_in->ants = ft_atoi(line)) < 1)
+		termination();
 	push_elem(line, &map->data);
 	if (!read_data(map))
-		error();
-	if (!rewrite_to_inf(map, inf))
-		error();
+		termination();
+	if (!convert(map, lem_in))
+		termination();
 	free_t_valid(map);
-	return (inf);
+	return (lem_in);
 }

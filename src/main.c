@@ -5,63 +5,66 @@ void		clean_matrix(_Bool ***m)
 	int i;
 
 	i = 0;
-	while (i < g_info->n_rooms)
+	while (i < g_lem_in->rooms)
 		free((*m)[i++]);
 	free(*m);
 }
 
-int			error(void)
+int			termination(void)
 {
 	if (g_np)
 		clean_matrix(&g_np);
 	if (g_mnp)
 		clean_matrix(&g_mnp);
 	ft_putendl("Error");
-	if (g_info)
+	if (g_lem_in)
 	{
-		free_lst(g_info->data, 1);
-		free_nodes(g_info->nodes);
-		clean_matrix(&g_info->links);
-		free(g_info);
+		free_lst(g_lem_in->data, 1);
+		free_nodes(g_lem_in->nodes);
+		clean_matrix(&g_lem_in->links);
+		free(g_lem_in);
 	}
 	exit(0);
 }
 
-static int	free_info(void)
+static int	free_lem_in(void)
 {
 	if (g_np)
 		clean_matrix(&g_np);
 	if (g_mnp)
 		clean_matrix(&g_mnp);
-	if (g_info)
+	if (g_lem_in)
 	{
-		free_lst(g_info->data, 1);
-		free_nodes(g_info->nodes);
-		clean_matrix(&g_info->links);
-		free(g_info);
+		free_lst(g_lem_in->data, 1);
+		free_nodes(g_lem_in->nodes);
+		clean_matrix(&g_lem_in->links);
+		free(g_lem_in);
 	}
 	return (1);
 }
 
-int			main(void)
+int			main(int ac, char **av)
 {
 	t_pathkit	p_kit;
 	t_lst		*p;
 
-	g_info = NULL;
-	g_info = read_map();
+	(void)av;
+	if (ac != 1)
+		termination();
 	g_np = NULL;
 	g_mnp = NULL;
-	find_mnp();
-	p_kit = find_path_kit();
-	p = g_info->data;
+	g_lem_in = NULL;
+	g_lem_in = get_anthill();
+	min_ways();
+	p_kit = set_paths_kit();
+	p = g_lem_in->data;
 	while (p)
 	{
 		ft_printf("%s\n", p->one_line);
 		p = p->next;
 	}
-	ft_putendl("");
-	push_ants(p_kit, g_info->n_ants);
-	free_info();
+	ft_printf("\n");
+	push_ants(p_kit, g_lem_in->ants);
+	free_lem_in();
 	exit(0);
 }

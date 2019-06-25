@@ -8,7 +8,7 @@ void	free_t_valid(t_valid *me)
 	free(me);
 }
 
-int		free_2d(char **mas, int back)
+int		del_parse(char **mas, int back)
 {
 	char **start;
 

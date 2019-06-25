@@ -15,15 +15,15 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./src/
 SOURCES_LIST =	main.c \
-				read_map.c \
-				basics.c \
+				anthill.c \
+				utilities.c \
 				list_funcs.c \
 				validation.c \
-				mnp_finder1.c \
-				mnp_finder2.c \
-				path_finder.c \
+				find_min_ways.c \
+				find_ways.c \
+				find_path.c \
 				path_queue.c \
-				find_pkit.c \
+				paths_kit.c \
 				push_ants.c \
 				print_steps.c \
 				clean.c

@@ -27,14 +27,14 @@ void		ants_distribution(t_pathkit paths, int ants)
 void		set_squads(t_pathkit paths)
 {
 	int		i;
-	int		range;
+	int		interval;
 
 	i = 0;
-	range = 1;
+	interval = 1;
 	while (i < paths.len)
 	{
-		paths.paths[i].index = range;
-		range += paths.paths[i++].ants;
+		paths.paths[i].index = interval;
+		interval += paths.paths[i++].ants;
 	}
 }
 

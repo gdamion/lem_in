@@ -28,14 +28,14 @@ int			check_comment(char *s)
 		if (!parse[0] || parse[0][0] == 'L' || !parse[1] ||
 			!is_int(parse[1]) || !parse[2] ||
 			!is_int(parse[2]) || parse[3])
-			return (free_2d(parse, 0));
-		return (free_2d(parse, -1));
+			return (del_parse(parse, 0));
+		return (del_parse(parse, -1));
 	}
 	if (ft_strchr(s, '-') && (parse = ft_strsplit(s, '-')))
 	{
 		if (!parse[0] || !parse[1] || parse[2])
-			return (free_2d(parse, 0));
-		return (free_2d(parse, -2));
+			return (del_parse(parse, 0));
+		return (del_parse(parse, -2));
 	}
 	return (0);
 }
@@ -68,7 +68,7 @@ int			room_exist(char *line, t_lst *list, int stat)
 	return (0);
 }
 
-int			link_n_ok(char *line, t_lst *rms, t_lst *links)
+int			link_ok(char *line, t_lst *rms, t_lst *links)
 {
 	char	*l;
 	char	*ll;
