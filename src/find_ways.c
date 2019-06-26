@@ -1,25 +1,25 @@
 #include "lem_in.h"
 
-_Bool		**init_ways(void)
+_Bool		**init_matrix(int rooms)
 {
-	_Bool	**n;
 	int		a;
+	_Bool	**matrix;
 
 	a = 0;
-	if (!(n = (_Bool**)malloc(sizeof(_Bool*) * g_lem_in->rooms)))
-		termination();
-	while (a < g_lem_in->rooms)
+	if (!(matrix = (_Bool**)malloc(sizeof(_Bool*) * rooms)))
+		print_error(ERR_LINE_INIT);
+	while (a < rooms)
 	{
-		if (!(n[a] = (_Bool*)malloc(sizeof(_Bool) * (g_lem_in->rooms))))
+		if (!(matrix[a] = (_Bool*)malloc(sizeof(_Bool) * rooms)))
 		{
 			while (--a >= 0)
-				free(n[a]);
-			termination();
+				free(matrix[a]);
+			print_error(ERR_MATRIX_INIT);
 		}
-		ft_bzero(n[a], sizeof(char) * g_lem_in->rooms);
+		ft_bzero(matrix[a], sizeof(char) * rooms);
 		a++;
 	}
-	return (n);
+	return (matrix);
 }
 
 void		cpy_ways(void)

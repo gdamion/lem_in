@@ -30,7 +30,7 @@ int		free_lst(t_lst *me, char stat)
 	{
 		next = me->next;
 		if (stat)
-			free(me->one_line);
+			free(me->line);
 		free(me);
 		me = next;
 	}

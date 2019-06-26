@@ -49,7 +49,7 @@ int			room_exist(char *line, t_lst *list, int stat)
 		len = ft_strlen(line);
 		while (list)
 		{
-			if (!ft_strncmp(line, list->one_line, len))
+			if (!ft_strncmp(line, list->line, len))
 				return (1);
 			list = list->next;
 		}
@@ -59,8 +59,8 @@ int			room_exist(char *line, t_lst *list, int stat)
 		len = ft_strchr(line, ' ') - line;
 		while (list)
 		{
-			if (!ft_strncmp(line, list->one_line, len + 1) ||
-				!ft_strcmp(line + len, ft_strchr(list->one_line, ' ')))
+			if (!ft_strncmp(line, list->line, len + 1) ||
+				!ft_strcmp(line + len, ft_strchr(list->line, ' ')))
 				return (1);
 			list = list->next;
 		}
@@ -80,12 +80,12 @@ int			link_ok(char *line, t_lst *rms, t_lst *links)
 		return (1 + 0 * (*l = '-'));
 	while (links)
 	{
-		ll = ft_strchr(links->one_line, '-');
+		ll = ft_strchr(links->line, '-');
 		*ll = '\0';
-		if (!room_exist(links->one_line, rms, 0) || !room_exist(ll + 1, rms, 0))
+		if (!room_exist(links->line, rms, 0) || !room_exist(ll + 1, rms, 0))
 			return (1);
-		if ((!ft_strcmp(line, links->one_line) && !ft_strcmp(l + 1, ll + 1))
-			|| (!ft_strcmp(line, ll + 1) && !ft_strcmp(l + 1, links->one_line)))
+		if ((!ft_strcmp(line, links->line) && !ft_strcmp(l + 1, ll + 1))
+			|| (!ft_strcmp(line, ll + 1) && !ft_strcmp(l + 1, links->line)))
 		{
 			*ll = '-';
 			*l = '-';

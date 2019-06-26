@@ -10,7 +10,7 @@ void		clean_matrix(_Bool ***m)
 	free(*m);
 }
 
-int			termination(void)
+int			free_info(void)
 {
 	if (g_np)
 		clean_matrix(&g_np);
@@ -27,7 +27,7 @@ int			termination(void)
 	exit(0);
 }
 
-static int	free_lem_in(void)
+int	free_lem_in(void)
 {
 	if (g_np)
 		clean_matrix(&g_np);
@@ -45,26 +45,27 @@ static int	free_lem_in(void)
 
 int			main(int ac, char **av)
 {
-	t_pathkit	p_kit;
-	t_lst		*p;
+	// t_pathkit	p_kit;
+	// t_lst		*p;
 
 	(void)av;
+	errno = 0;
 	if (ac != 1)
-		termination();
+		print_error("Error");
 	g_np = NULL;
 	g_mnp = NULL;
 	g_lem_in = NULL;
 	g_lem_in = get_anthill();
-	min_ways();
-	p_kit = set_paths_kit();
-	p = g_lem_in->data;
-	while (p)
-	{
-		ft_printf("%s\n", p->one_line);
-		p = p->next;
-	}
-	ft_printf("\n");
-	push_ants(p_kit, g_lem_in->ants);
-	free_lem_in();
+	// min_ways();
+	// // p_kit = set_paths_kit();
+	// p = g_lem_in->data;
+	// while (p)
+	// {
+	// 	ft_printf("%s\n", p->line);
+	// 	p = p->next;
+	// }
+	// ft_printf("\n");
+	// // push_ants(p_kit, g_lem_in->ants);
+	// free_lem_in();
 	exit(0);
 }

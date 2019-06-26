@@ -6,7 +6,7 @@ void		add_elem(char *line, t_lst **lst)
 
 	new = ft_memalloc(sizeof(t_lst));
 	new->next = *lst;
-	new->one_line = line;
+	new->line = line;
 	*lst = new;
 }
 
@@ -20,7 +20,7 @@ void		push_elem(char *line, t_lst **lst)
 	{
 		*lst = ft_memalloc(sizeof(t_lst));
 		(*lst)->next = NULL;
-		(*lst)->one_line = line;
+		(*lst)->line = line;
 	}
 	else
 	{
@@ -28,7 +28,7 @@ void		push_elem(char *line, t_lst **lst)
 			p = p->next;
 		new = ft_memalloc(sizeof(t_lst));
 		new->next = NULL;
-		new->one_line = line;
+		new->line = line;
 		p->next = new;
 	}
 }

@@ -23,9 +23,9 @@ static int	fill_links(_Bool **links, t_lst *src, char **names, int n)
 
 	while (src)
 	{
-		pos = ft_strchr(src->one_line, '-');
+		pos = ft_strchr(src->line, '-');
 		*pos = '\0';
-		l = get_index(src->one_line, names);
+		l = get_index(src->line, names);
 		ll = get_index(pos + 1, names);
 		*pos = '-';
 		links[l][ll] = 1;
@@ -52,12 +52,12 @@ static void	fill_nodes(t_node **nodes, t_lst *rms, char **names, t_valid *map)
 	(*(nodes++))->status = 0;
 	while (rms)
 	{
-		if (ft_strcmp(rms->one_line, map->start) &&
-		ft_strcmp(rms->one_line, map->end))
+		if (ft_strcmp(rms->line, map->start) &&
+		ft_strcmp(rms->line, map->end))
 		{
 			*nodes = ft_memalloc(sizeof(t_node));
-			*names = ft_strsub(rms->one_line, 0,
-			ft_strchr(rms->one_line, ' ') - rms->one_line);
+			*names = ft_strsub(rms->line, 0,
+			ft_strchr(rms->line, ' ') - rms->line);
 			(*nodes)->name = *(names++);
 			(*(nodes++))->status = 0;
 		}
@@ -90,7 +90,7 @@ static int	convert(t_valid *map, t_lem_in *inf)
 	}
 	fill_nodes(inf->nodes, map->rooms, map->names, map);
 	if (!fill_links(inf->links, map->links, map->names, map->num_r))
-		termination();
+		print_error();
 	inf->data = map->data;
 	inf->rooms = map->num_r;
 	return (1);
@@ -104,22 +104,22 @@ t_lem_in		*get_anthill(void)
 	int			stat;
 
 	if (!(lem_in = malloc(sizeof(t_lem_in))))
-		termination();
+		print_error();
 	ft_bzero(lem_in, sizeof(t_lem_in));
 	if (!(map = ft_memalloc(sizeof(t_valid))))
-		termination();
+		print_error();
 	ft_bzero(map, sizeof(t_valid));
 	while ((stat = get_next_line(0, &line)) > 0 && check_comment(line) > 0)
 		push_elem(line, &map->data);
-	if (stat < 1 || !is_int(line))
-		termination();
+	// if (stat < 1 || !is_int(line))
+	// 	print_error();
 	if ((lem_in->ants = ft_atoi(line)) < 1)
-		termination();
+		print_error();
 	push_elem(line, &map->data);
 	if (!read_data(map))
-		termination();
+		print_error();
 	if (!convert(map, lem_in))
-		termination();
+		print_error();
 	free_t_valid(map);
 	return (lem_in);
 }

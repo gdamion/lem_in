@@ -56,7 +56,7 @@ void		free_in_alloc(t_pathkit *p_kit, t_id **l_id, int *i)
 	while (--(*i) >= 0)
 		free(p_kit->paths[*i].room);
 	free(p_kit->paths);
-	termination();
+	print_error();
 }
 
 void		fill(t_pathkit *p_kit, t_id **l_id, int *i)
@@ -82,8 +82,8 @@ t_pathkit		set_paths_kit(void)
 
 	i = -1;
 	l_id = NULL;
-	(!(p_kit.len = count_ways())) ? termination() : 1;
-	!(p_kit.paths = PATHS()) ? termination() : 1;
+	(!(p_kit.len = count_ways())) ? print_error() : 1;
+	!(p_kit.paths = PATHS()) ? print_error() : 1;
 	while (++i < p_kit.len)
 	{
 		fill(&p_kit, &l_id, &i);

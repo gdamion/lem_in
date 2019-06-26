@@ -3,16 +3,39 @@
 
 # include "libft.h"
 
+/*
+** Lem-in message
+*/
+
+# define LEM_IN_USAGE			"Usage: ./lem-in < MAP_FILE"
+# define ERR_LEM_IN_INIT		"ERROR: Can\'t initialize Lem-in"
+
+/*
+** Read map
+*/
+
+# define ERR_LINKS				"ERROR: Invalid link(s)"
+# define ERR_READING			"ERROR: Reading error"
+# define ERR_NUM_ANTS			"ERROR: Invalid number of ants"
+# define ERR_END_ROOM			"ERROR: More than 1 \"end\" room"
+# define ERR_LINE_INIT			"ERROR: Can\'t initialize line"
+# define ERR_MATRIX_INIT		"ERROR: Can\'t initialize matrix"
+# define ERR_START_ROOM			"ERROR: More than 1 \"start\" room"
+# define ERR_ROOM_PARSING		"ERROR: Reading rooms"
+# define ERR_ROOM_DUPLICATE		"ERROR: The duplication room"
+# define ERR_START_END_ROOM		"ERROR: No \"start\" or \"end\" room(s)"
+
 # define ERROR 5
 # define TRUE 1
 # define FALSE 0
 # define STATUS(i) (g_lem_in->nodes[i]->status)
 # define PATHS() ((t_path*)malloc(sizeof(t_path) * p_kit.len))
+# define INIT_LEM_IN (!(lem_in = (t_lem_in *)ft_memalloc(sizeof(t_lem_in))))
 
 typedef struct			s_lst
 {
 	struct s_lst		*next;
-	char				*one_line;
+	char				*line;
 }						t_lst;
 
 typedef struct			s_valid
@@ -36,9 +59,15 @@ typedef struct			s_node
 typedef	struct			s_lem_in
 {
 	int					ants;
+	int					lnks;
 	int					rooms;
-	t_node				**nodes;
-	_Bool				**links;
+	char				*start;
+	char				*end;
+	char				**names;
+	t_lst				*nodes;
+	t_lst				*links;
+	t_node				*nodes1;
+	_Bool				**matrix;
 	t_lst				*data;
 }						t_lem_in;
 
@@ -70,8 +99,7 @@ typedef struct			s_id
 	struct s_id			*next;
 }						t_id;
 
-int						termination();
-int						is_int(char *s);
+_Bool					is_int(const char *str, _Bool strict);
 int						check_comment(char *s);
 int						link_ok(char *line, t_lst *rms, t_lst *links);
 int						room_exist(char *line, t_lst *list, int stat);
@@ -97,7 +125,7 @@ int						find_ways(void);
 void					get_residual_network(void);
 void					set_path(t_room *path);
 void					cpy_ways(void);
-_Bool					**init_ways(void);
+_Bool					**init_matrix(int rooms);
 
 t_room					*find_path(int i, int j);
 _Bool					cross(int prev, int for_check);

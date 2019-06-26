@@ -86,8 +86,8 @@ void		min_ways(void)
 	int		min_performance;
 
 	error = ERROR;
-	g_np = init_ways();
-	g_mnp = init_ways();
+	g_np = init_matrix();
+	g_mnp = init_matrix();
 	min_performance = MAX_INT;
 	while (error)
 	{

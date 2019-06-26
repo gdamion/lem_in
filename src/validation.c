@@ -8,7 +8,7 @@ static char	*read_nodes(t_valid *map, char *line, int lvl)
 		{
 			if (check_comment(line) != -1 || (lvl == 2 && map->start) ||
 				(lvl == 3 && map->end) || room_exist(line, map->rooms, 1))
-				termination(0);
+				print_error(0);
 			map->start = lvl == 2 ? line : map->start;
 			map->end = lvl == 3 ? line : map->end;
 			push_elem(line, &map->data);
@@ -17,15 +17,15 @@ static char	*read_nodes(t_valid *map, char *line, int lvl)
 		else if (lvl == -1 && ++map->num_r)
 		{
 			if (room_exist(line, map->rooms, 1))
-				termination(0);
+				print_error(0);
 			add_elem(line, &map->rooms);
 		}
 		if (!get_next_line(0, &line) || !(lvl = check_comment(line)))
-			termination();
+			print_error();
 		push_elem(line, &map->data);
 	}
 	if (!map->start || !map->end)
-		termination();
+		print_error();
 	return (line);
 }
 
@@ -39,14 +39,14 @@ static void	read_links(t_valid *map, char *line)
 		if (lvl == -2)
 		{
 			if (link_ok(line, map->rooms, map->links))
-				termination();
+				print_error();
 			else
 				add_elem(line, &map->links);
 		}
 		if (!get_next_line(0, &line))
 			break ;
 		if (!(lvl = check_comment(line)) || lvl == -1)
-			termination();
+			print_error();
 		push_elem(line, &map->data);
 	}
 	return ;
