@@ -15,10 +15,12 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./src/
 SOURCES_LIST =	main.c \
-				get_antshill.c \
+				anthill.c \
 				get.c \
+				additional.c \
 				is.c \
-				list_funcs.c
+				utilities.c \
+				add.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 

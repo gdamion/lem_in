@@ -24,6 +24,7 @@
 # define ERR_MATRIX_INIT		"ERROR: Can\'t initialize matrix"
 # define ERR_START_ROOM			"ERROR: More than 1 \"start\" room"
 # define ERR_ROOM_PARSING		"ERROR: Reading rooms"
+# define ERR_ILLEGAL_NAME		"ERROR: Illegal name"
 # define ERR_LINK_DUPLICATE		"ERROR: The duplication link"
 # define ERR_ROOM_DUPLICATE		"ERROR: The duplication room"
 # define ERR_START_END_ROOM		"ERROR: No \"start\" or \"end\" room(s)"
@@ -41,14 +42,6 @@ typedef struct			s_lst
 	char				*line;
 }						t_lst;
 
-typedef struct			s_rooms
-{
-	int					x;
-	int					y;
-	char				*name;
-	struct s_rooms		*next;
-}						t_rooms;
-
 typedef struct			s_links
 {
 	char				*a;
@@ -56,26 +49,13 @@ typedef struct			s_links
 	struct s_links		*next;
 }						t_links;
 
-
-
-typedef struct			s_valid
+typedef struct			s_rooms
 {
-	int					start;
-	int					end;
-	t_lst				*data;
-	t_lst				*rooms;
-	t_lst				*links;
-	char				**names;
-	int					num_r;
-	int					num_l;
-	int					ants;
-}						t_valid;
-
-typedef struct			s_node
-{
+	int					x;
+	int					y;
 	char				*name;
-	_Bool				status;
-}						t_node;
+	struct s_rooms		*next;
+}						t_rooms;
 
 typedef	struct			s_lem_in
 {
@@ -85,7 +65,8 @@ typedef	struct			s_lem_in
 	int					rooms;
 	char				**names;
 	t_rooms				*nodes;
-	t_links				*links;
+	char				*links_a;
+	char				*links_b;
 	_Bool				**matrix;
 	t_lst				*data;
 }						t_lem_in;
@@ -117,9 +98,10 @@ typedef struct			s_id
 	int					id;
 	struct s_id			*next;
 }						t_id;
+
 //////////////////////////////////////////////////////////////
 
-t_lem_in		*get_antshill(void);
+t_lem_in		*anthill(void);
 _Bool			is_comment(char *str);
 _Bool			is_command(char *str);
 _Bool			is_link(char *str);
@@ -134,10 +116,12 @@ _Bool			get_link(t_lem_in *lem_in, char *str);
 void			add_room(char **table, t_rooms **rooms);
 void			add_link(char **table, t_links **links);
 void			rooms_duplicate(t_rooms *nodes);
+char			**set_names(t_lem_in *lem_in, t_rooms *nodes);
 
 
 
 //////////////////////////////////////////////////////////////
+
 _Bool					is_int(const char *str, _Bool strict);
 int						check_comment(char *s);
 int						link_ok(char *line, t_lst *rms, t_lst *links);
@@ -147,12 +131,9 @@ void					add_elem(char *line, t_lst **lst);
 void					push_elem(char *line, t_lst **lst);
 
 t_lem_in				*get_anthill(void);
-int						read_data(t_valid *map);
 
-void					free_t_valid(t_valid *me);
 int						del_parse(char **mas, int back);
 int						free_lst(t_lst *me, char stat);
-int						free_nodes(t_node **me);
 
 void					min_ways(void);
 int						check_performance(void);

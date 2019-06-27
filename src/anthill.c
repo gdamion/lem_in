@@ -1,125 +1,91 @@
 #include "lem_in.h"
 
-static int	get_index(char *nom, char **names)
+void			parse_ants(t_lem_in *lem_in, char **buffer)
 {
-	int i;
+	int			size;
 
-	i = 0;
-	while (names[i])
+	while ((size = get_next_line(0, buffer)))
 	{
-		if (!ft_strcmp(names[i], nom))
-			return (i);
-		++i;
-	}
-	return (-1);
-}
-
-static int	fill_links(_Bool **links, t_lst *src, char **names, int n)
-{
-	int		l;
-	int		ll;
-	char	*pos;
-	int		last;
-
-	while (src)
-	{
-		pos = ft_strchr(src->line, '-');
-		*pos = '\0';
-		l = get_index(src->line, names);
-		ll = get_index(pos + 1, names);
-		*pos = '-';
-		links[l][ll] = 1;
-		links[ll][l] = 1;
-		src = src->next;
-	}
-	l = 0;
-	ll = 0;
-	last = n - 1;
-	while (n--)
-	{
-		l += links[0][n];
-		ll += links[last][n];
-	}
-	return (l && ll);
-}
-
-static void	fill_nodes(t_node **nodes, t_lst *rms, char **names, t_valid *map)
-{
-	*names = ft_strsub(map->start, 0,
-	ft_strchr(map->start, ' ') - map->start);
-	*nodes = ft_memalloc(sizeof(t_node));
-	(*nodes)->name = *(names++);
-	(*(nodes++))->status = 0;
-	while (rms)
-	{
-		if (ft_strcmp(rms->line, map->start) &&
-		ft_strcmp(rms->line, map->end))
+		if (size == -1)
+			print_error(ERR_READING);
+		if (!is_comment(*buffer))
 		{
-			*nodes = ft_memalloc(sizeof(t_node));
-			*names = ft_strsub(rms->line, 0,
-			ft_strchr(rms->line, ' ') - rms->line);
-			(*nodes)->name = *(names++);
-			(*(nodes++))->status = 0;
+			if (is_int(*buffer, TRUE))
+				lem_in->ants = ft_atoi(*buffer);
+			else
+				return ;
 		}
-		rms = rms->next;
+		add_elem(*buffer, &lem_in->data);
 	}
-	*names = ft_strsub(map->end, 0, ft_strchr(map->end, ' ') - map->end);
-	*nodes = ft_memalloc(sizeof(t_node));
-	(*nodes)->name = *names;
-	(*nodes)->status = 0;
-	*(++nodes) = NULL;
-	*(++names) = NULL;
 }
 
-static int	convert(t_valid *map, t_lem_in *inf)
+void			parse_rooms(t_lem_in *lem_in, char **buffer)
 {
-	int		p;
-	_Bool	**lp;
+	int			size;
 
-	inf->nodes = ft_memalloc(sizeof(t_node*) * (map->num_r + 1));
-	inf->links = ft_memalloc(sizeof(char*) * (map->num_r));
-	map->names = ft_memalloc(sizeof(char*) * (map->num_r + 1));
-	p = map->num_r;
-	lp = inf->links;
-	while (p)
+	size = 0;
+	while (*buffer || (size = get_next_line(0, buffer)))
 	{
-		*lp = ft_memalloc((map->num_r) * sizeof(_Bool));
-		ft_bzero(*lp, (map->num_r) * sizeof(_Bool));
-		--p;
-		++lp;
+		if (size == -1)
+			print_error(ERR_READING);
+		if (!get_command(lem_in, *buffer))
+		{
+			if (!is_comment(*buffer))
+			{
+				if (!get_room(lem_in, *buffer))
+				{
+					if (is_link(*buffer))
+						return ;
+					else
+						print_error(ERR_ROOM_PARSING);
+				}
+			}
+		}
+		*buffer = 0;
+		add_elem(*buffer, &lem_in->data);
 	}
-	fill_nodes(inf->nodes, map->rooms, map->names, map);
-	if (!fill_links(inf->links, map->links, map->names, map->num_r))
-		print_error();
-	inf->data = map->data;
-	inf->rooms = map->num_r;
-	return (1);
+	return ;
 }
 
-t_lem_in		*get_anthill(void)
+void			parse_links(t_lem_in *lem_in, char **buffer)
 {
-	t_valid		*map;
-	t_lem_in	*lem_in;
-	char		*line;
-	int			stat;
+	int			size;
 
-	if (!(lem_in = malloc(sizeof(t_lem_in))))
-		print_error();
+	size = 0;
+	while (*buffer || (size = get_next_line(0, buffer)))
+	{
+		if (size == -1)
+			print_error(ERR_READING);
+		if (!is_comment(*buffer))
+			if (!get_link(lem_in, *buffer))
+				print_error(ERR_ROOM_PARSING);
+		*buffer = 0;
+		add_elem(*buffer, &lem_in->data);
+	}
+	return ;
+}
+
+t_lem_in		*anthill(void)
+{
+	char		*buffer;
+	t_lem_in	*lem_in;
+
+	buffer = 0;
+	if (INIT_LEM_IN)
+		print_error(ERR_LEM_IN_INIT);
 	ft_bzero(lem_in, sizeof(t_lem_in));
-	if (!(map = ft_memalloc(sizeof(t_valid))))
-		print_error();
-	ft_bzero(map, sizeof(t_valid));
-	while ((stat = get_next_line(0, &line)) > 0 && check_comment(line) > 0)
-		push_elem(line, &map->data);
-	// if (stat < 1 || !is_int(line))
-	// 	print_error();
-	if ((lem_in->ants = ft_atoi(line)) < 1)
-		print_error();
-	push_elem(line, &map->data);
-	if (!read_data(map))
-		print_error();
-	if (!convert(map, lem_in))
-		print_error();
-	free_t_valid(map);
+	lem_in->start = -1;
+	lem_in->end = -1;
+	parse_ants(lem_in, &buffer);
+	if (lem_in->ants < 1)
+		print_error(ERR_NUM_ANTS);
+	parse_rooms(lem_in, &buffer);
+	if (lem_in->start == -1 || lem_in->end == -1)
+		print_error(ERR_START_END_ROOM);
+	lem_in->names = set_names(lem_in, lem_in->nodes);
+	lem_in->matrix = init_matrix(lem_in->rooms);
+	parse_links(lem_in, &buffer);
+	if (!lem_in->links_a || !lem_in->links_b)
+		print_error(ERR_NO_LINKS);
 	return (lem_in);
 }

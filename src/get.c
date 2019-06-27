@@ -1,50 +1,6 @@
 #include "lem_in.h"
 
-_Bool		get_command(t_lem_in *lem_in, char *str)
-{
-	if (str)
-	{
-		if (!ft_strcmp(str, "##start"))
-		{
-			if (!lem_in->start)
-				lem_in->start = lem_in->rooms + 1;
-			else
-				print_error(ERR_START_ROOM);
-			return (TRUE);
-		}
-		if (!ft_strcmp(str, "##end"))
-		{
-			if (!lem_in->end)
-				lem_in->end = lem_in->rooms + 1;
-			else
-				print_error(ERR_END_ROOM);
-			return (TRUE);
-		}
-	}
-	return (FALSE);
-}
-
-_Bool		get_room(t_lem_in *lem_in, char *str)
-{
-	_Bool	result;
-	char	**table;
-
-	result = FALSE;
-	if (!(table = ft_strsplit(str, ' ')))
-		print_error(ERR_ROOM_PARSING);
-	if (row_count(table) == 3)
-	{
-		add_room(table, &lem_in->nodes);
-		rooms_duplicate(lem_in->nodes);
-		result = TRUE;
-		lem_in->rooms++;
-	}
-	if (!result)
-		free_words(&table);
-	return (result);
-}
-
-void		mark_matrix(t_links *links, _Bool **matrix, char **names)
+static void		mark_matrix(t_lem_in *lem_in, _Bool **matrix, char **names)
 {
 	int	i;
 	int	end;
@@ -55,10 +11,11 @@ void		mark_matrix(t_links *links, _Bool **matrix, char **names)
 	start = -1;
 	while ((start == -1 || end == -1) && names[i])
 	{
-		if (!ft_strcmp(links->a, names[i]))
+		if (!ft_strcmp(lem_in->links_a, names[i]))
 			start = i;
-		if (!ft_strcmp(links->b, names[i]))
+		if (!ft_strcmp(lem_in->links_b, names[i]))
 			end = i;
+		i++;
 	}
 	if (start == -1 || end == -1)
 		print_error(ERR_LINKS);
@@ -73,19 +30,64 @@ void		mark_matrix(t_links *links, _Bool **matrix, char **names)
 
 _Bool		get_link(t_lem_in *lem_in, char *str)
 {
-	_Bool	result;
+	_Bool	is_link;
 	char	**table;
 
-	result = FALSE;
-	if (!(table = ft_strsplit(str, ' ')))
+	is_link = FALSE;
+	if (!(table = ft_strsplit(str, '-')))
 		print_error(ERR_ROOM_PARSING);
 	if (row_count(table) == 2)
 	{
-		add_link(table, &lem_in->links);
-		mark_matrix(lem_in->links, lem_in->matrix, lem_in->names);
-		result = TRUE;
+		lem_in->links_a = table[0];
+		lem_in->links_b = table[1];
+		mark_matrix(lem_in, lem_in->matrix, lem_in->names);
+		is_link = TRUE;
 	}
-	if (!result)
+	if (!is_link)
 		free_words(&table);
-	return (result);
+	return (is_link);
+}
+
+_Bool		get_command(t_lem_in *lem_in, char *str)
+{
+	if (str)
+	{
+		if (!ft_strcmp(str, "##start"))
+		{
+			if (lem_in->start == -1)
+				lem_in->start = lem_in->rooms + 1;
+			else
+				print_error(ERR_START_ROOM);
+			return (TRUE);
+		}
+		if (!ft_strcmp(str, "##end"))
+		{
+			if (lem_in->end == -1)
+				lem_in->end = lem_in->rooms + 1;
+			else
+				print_error(ERR_END_ROOM);
+			return (TRUE);
+		}
+	}
+	return (FALSE);
+}
+
+_Bool		get_room(t_lem_in *lem_in, char *str)
+{
+	_Bool	is_room;
+	char	**table;
+
+	is_room = FALSE;
+	if (!(table = ft_strsplit(str, ' ')))
+		print_error(ERR_ROOM_PARSING);
+	if (row_count(table) == 3)
+	{
+		add_room(table, &lem_in->nodes);
+		rooms_duplicate(lem_in->nodes);
+		is_room = TRUE;
+		lem_in->rooms++;
+	}
+	if (!is_room)
+		free_words(&table);
+	return (is_room);
 }

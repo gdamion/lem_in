@@ -55,7 +55,7 @@ int			main(int ac, char **av)
 	g_np = NULL;
 	g_mnp = NULL;
 	g_lem_in = NULL;
-	g_lem_in = get_antshill();
+	g_lem_in = anthill();
 	// min_ways();
 	// // p_kit = set_paths_kit();
 	// p = g_lem_in->data;

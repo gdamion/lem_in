@@ -5,7 +5,8 @@ _Bool				is_comment(char *str)
 	if (str)
 	{
 		if (ft_strlen(str)
-			&& !is_command(str)
+			&& ft_strcmp(str, "##end")
+			&& ft_strcmp(str, "##start")
 			&& !ft_strncmp(str, "#", 1))
 			return (TRUE);
 	}
@@ -49,8 +50,9 @@ int					is_integer(char *s)
 
 	integer = ft_atoi(s);
 	new = ft_itoa(integer);
-	if (!(result = ft_strcmp(new, s)))
-		print_error(ERR_READING);
+	result = ft_strcmp(new, s);
+	if (result)
+		print_error(new);
 	free(new);
 	return (integer);
 }
@@ -83,28 +85,4 @@ _Bool				is_int(const char *str, _Bool strict)
 		result = result * 10 + (str[i++] - '0');
 	}
 	return (!str[i] && digits);
-}
-
-size_t		row_count(char **table)
-{
-	size_t	size;
-
-	size = 0;
-	if (table)
-		while (*table)
-		{
-			size++;
-			table++;
-		}
-	return (size);
-}
-
-_Bool	valid_name(char *str)
-{
-	if (str && ft_strlen(str))
-	{
-		if (str[0] != 'L' && str[0] != '#')
-			return (TRUE);
-	}
-	return (FALSE);
 }
