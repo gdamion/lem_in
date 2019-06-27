@@ -1,6 +1,6 @@
 #include "lem_in.h"
 
-void			parse_ants(t_lem_in *lem_in, char **buffer)
+void			parse_ants(t_valid *data, char **buffer)
 {
 	size_t		size;
 
@@ -12,7 +12,7 @@ void			parse_ants(t_lem_in *lem_in, char **buffer)
 		{
 			if (is_int(*buffer, TRUE))
 			{
-				if ((lem_in->ants = ft_atoi(*buffer)) < 1)
+				if ((data->ants = ft_atoi(*buffer)) < 1)
 					terminate(ERR_NUM_ANTS);	
 			}
 			else if (is_room(*buffer) || is_command(*buffer))
@@ -20,11 +20,11 @@ void			parse_ants(t_lem_in *lem_in, char **buffer)
 			else
 				terminate(ERR_READING);
 		}
-		push_elem(*buffer, &lem_in->data);
+		push_elem(*buffer, &data->data);
 	}
 }
 
-void			parse_rooms(t_lem_in *lem_in, char **buffer)
+void			parse_rooms(t_valid *data, char **buffer)
 {
 	size_t		size;
 	int			rooms;
@@ -34,8 +34,8 @@ void			parse_rooms(t_lem_in *lem_in, char **buffer)
 	{
 		if (size == -1)
 			terminate(ERR_READING);
-		if (!get_room(lem_in, *buffer))
-			if (!get_command(lem_in, *buffer))
+		if (!get_room(data, *buffer))
+			if (!get_command(data, *buffer))
 				if (!is_comment(*buffer))
 					if (is_link(*buffer))
 					{
@@ -44,12 +44,12 @@ void			parse_rooms(t_lem_in *lem_in, char **buffer)
 					else
 						terminate(ERR_ROOM_PARSING);
 		*buffer = 0;
-		push_elem(*buffer, &lem_in->data);
+		push_elem(*buffer, &data->data);
 	}
 	return ;
 }
 
-void			parse_links(t_lem_in *lem_in, char **buffer)
+void			parse_links(t_valid *data, char **buffer)
 {
 	size_t		size;
 	char		line;
@@ -60,11 +60,11 @@ void			parse_links(t_lem_in *lem_in, char **buffer)
 	{
 		if (size == -1)
 			terminate(ERR_READING);
-		if (!get_link(lem_in, *buffer))
+		if (!get_link(data, *buffer))
 			if (!is_comment(*buffer))
 				terminate(ERR_ROOM_PARSING);
 		*buffer = 0;
-		push_elem(line, &lem_in->data);
+		push_elem(line, &data->data);
 		return ;
 	}
 }
@@ -78,49 +78,36 @@ void			swap_names(char **names, int a, int b)
 	names[b] = temp;
 }
 
-int			is_integer(char *s)
-{
-	char	*new;
-	int		result;
-	int		integer;
-
-	integer = ft_atoi(s);
-	new = ft_itoa(integer);
-	if (!(result = ft_strcmp(new, s)))
-		terminate(ERR_READING);
-	free(new);
-	return (!result ? integer : -1);
-}
-
-void			check_duplicate(t_lem_in *lem_in, )
+void			check_duplicate(t_valid *data, )
 {
 	
 }
 
-char			**set_names(t_lem_in *lem_in)
+char			**set_names(t_valid *data)
 {
 	int			i;
 	char		**names;
 	
 	i = 0;
-	names = ft_wordsnew(lem_in->rooms);
-	while (i < lem_in->rooms)
-		names[i++] = lem_in->nodes->line;
-	swap_names(names, 0, lem_in->start);
-	swap_names(names, lem_in->rooms - 1, lem_in->end);
+	names = ft_wordsnew(data->rooms);
+	while (i < data->rooms)
+		names[i++] = data->nodes->line;
+	swap_names(names, 0, data->start);
+	swap_names(names, data->rooms - 1, data->end);
 }
 
 t_lem_in		*get_antshill(void)
 {
 	char		*buffer;
 	t_lem_in	*lem_in;
+	t_valid		*data;
 
 	buffer = 0;
 	if (INIT_LEM_IN)
 		terminate(ERR_LEM_IN_INIT);
-	parse_ants(lem_in, &buffer);
-	parse_rooms(lem_in, &buffer);
-	lem_in->names = set_names(lem_in);
+	parse_ants(data, &buffer);
+	parse_rooms(data, &buffer);
+	lem_in->names = set_names(data);
 	lem_in->matrix = init_matrix(lem_in->rooms);
 	if (!lem_in->start || !lem_in->end)
 		terminate(ERR_START_END_ROOM);

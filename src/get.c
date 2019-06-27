@@ -38,7 +38,7 @@ _Bool		get_room(t_lem_in *lem_in, char *str)
 			&& is_int(table[1], TRUE)
 			&& is_int(table[2], TRUE))
 		{
-			push_elem(table, &lem_in->nodes);
+			add_rooms(table, &lem_in->nodes);
 			check_duplicate(lem_in->nodes);
 			result = TRUE;
 			lem_in->rooms++;

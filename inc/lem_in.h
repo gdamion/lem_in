@@ -38,16 +38,25 @@ typedef struct			s_lst
 	char				*line;
 }						t_lst;
 
+typedef struct			s_rooms
+{
+	int					x;
+	int					y;
+	char				*name;
+	struct s_rooms		*next;
+}						t_rooms;
+
 typedef struct			s_valid
 {
-	char				*start;
-	char				*end;
+	int					start;
+	int					end;
+	t_lst				*data;
 	t_lst				*rooms;
 	t_lst				*links;
-	t_lst				*data;
 	char				**names;
 	int					num_r;
 	int					num_l;
+	int					ants;
 }						t_valid;
 
 typedef struct			s_node

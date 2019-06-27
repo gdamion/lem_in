@@ -10,6 +10,32 @@ void		add_elem(char *line, t_lst **lst)
 	*lst = new;
 }
 
+int			is_integer(char *s)
+{
+	char	*new;
+	int		result;
+	int		integer;
+
+	integer = ft_atoi(s);
+	new = ft_itoa(integer);
+	if (!(result = ft_strcmp(new, s)))
+		terminate(ERR_READING);
+	free(new);
+	return (integer);
+}
+
+void		add_rooms(char **table, t_rooms **rooms)
+{
+	t_rooms	*new;
+
+	new = ft_memalloc(sizeof(t_rooms));
+	new->name = valid_name(table[0]);
+	new->x = is_integer(table[1]);
+	new->y = is_integer(table[2]);
+	new->next = *rooms;
+	*rooms = new;
+}
+
 void		push_elem(char *line, t_lst **lst)
 {
 	t_lst	*p;
