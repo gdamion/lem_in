@@ -15,19 +15,10 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./src/
 SOURCES_LIST =	main.c \
-				anthill.c \
-				utilities.c \
-				list_funcs.c \
-				validation.c \
-				find_min_ways.c \
-				find_ways.c \
-				find_path.c \
-				path_queue.c \
-				paths_kit.c \
-				push_ants.c \
-				print_steps.c \
-				clean.c
-
+				get_antshill.c \
+				get.c \
+				is.c \
+				list_funcs.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 

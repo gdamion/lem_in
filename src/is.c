@@ -1,6 +1,6 @@
 #include "lem_in.h"
 
-_Bool			is_comment(char *str)
+_Bool				is_comment(char *str)
 {
 	if (str)
 	{
@@ -12,12 +12,12 @@ _Bool			is_comment(char *str)
 	return (FALSE);
 }
 
-_Bool			is_link(char *str)
+_Bool				is_link(char *str)
 {
-	char		**table;
+	char			**table;
 
 	if (!(table = ft_strsplit(str, '-')))
-		terminate(ERR_ROOM_PARSING);
+		print_error(ERR_ROOM_PARSING);
 	if (row_count(table) == 2)
 	{
 		free_words(&table);
@@ -30,7 +30,7 @@ _Bool			is_link(char *str)
 	}
 }
 
-_Bool			is_command(char *str)
+_Bool				is_command(char *str)
 {
 	if (str)
 	{
@@ -40,6 +40,21 @@ _Bool			is_command(char *str)
 	}
 	return (FALSE);
 }
+
+int					is_integer(char *s)
+{
+	char			*new;
+	int				result;
+	int				integer;
+
+	integer = ft_atoi(s);
+	new = ft_itoa(integer);
+	if (!(result = ft_strcmp(new, s)))
+		print_error(ERR_READING);
+	free(new);
+	return (integer);
+}
+
 
 _Bool				is_int(const char *str, _Bool strict)
 {
@@ -70,7 +85,7 @@ _Bool				is_int(const char *str, _Bool strict)
 	return (!str[i] && digits);
 }
 
-size_t	row_count(char **table)
+size_t		row_count(char **table)
 {
 	size_t	size;
 

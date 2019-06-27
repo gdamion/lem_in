@@ -2,6 +2,7 @@
 # define LEM_IN_H
 
 # include "libft.h"
+#include <errno.h>
 
 /*
 ** Lem-in message
@@ -15,6 +16,7 @@
 */
 
 # define ERR_LINKS				"ERROR: Invalid link(s)"
+# define ERR_NO_LINKS			"ERROR: Links is absent"
 # define ERR_READING			"ERROR: Reading error"
 # define ERR_NUM_ANTS			"ERROR: Invalid number of ants"
 # define ERR_END_ROOM			"ERROR: More than 1 \"end\" room"
@@ -22,6 +24,7 @@
 # define ERR_MATRIX_INIT		"ERROR: Can\'t initialize matrix"
 # define ERR_START_ROOM			"ERROR: More than 1 \"start\" room"
 # define ERR_ROOM_PARSING		"ERROR: Reading rooms"
+# define ERR_LINK_DUPLICATE		"ERROR: The duplication link"
 # define ERR_ROOM_DUPLICATE		"ERROR: The duplication room"
 # define ERR_START_END_ROOM		"ERROR: No \"start\" or \"end\" room(s)"
 
@@ -46,6 +49,15 @@ typedef struct			s_rooms
 	struct s_rooms		*next;
 }						t_rooms;
 
+typedef struct			s_links
+{
+	char				*a;
+	char				*b;
+	struct s_links		*next;
+}						t_links;
+
+
+
 typedef struct			s_valid
 {
 	int					start;
@@ -67,15 +79,13 @@ typedef struct			s_node
 
 typedef	struct			s_lem_in
 {
+	int					end;
 	int					ants;
-	int					lnks;
+	int					start;
 	int					rooms;
-	char				*start;
-	char				*end;
 	char				**names;
-	t_lst				*nodes;
-	t_lst				*links;
-	t_node				*nodes1;
+	t_rooms				*nodes;
+	t_links				*links;
 	_Bool				**matrix;
 	t_lst				*data;
 }						t_lem_in;
@@ -107,7 +117,27 @@ typedef struct			s_id
 	int					id;
 	struct s_id			*next;
 }						t_id;
+//////////////////////////////////////////////////////////////
 
+t_lem_in		*get_antshill(void);
+_Bool			is_comment(char *str);
+_Bool			is_command(char *str);
+_Bool			is_link(char *str);
+_Bool			is_int(const char *str, _Bool strict);
+int				is_integer(char *s);
+size_t			row_count(char **table);
+_Bool			valid_name(char *str);
+
+_Bool			get_room(t_lem_in *lem_in, char *str);
+_Bool			get_command(t_lem_in *lem_in, char *str);
+_Bool			get_link(t_lem_in *lem_in, char *str);
+void			add_room(char **table, t_rooms **rooms);
+void			add_link(char **table, t_links **links);
+void			rooms_duplicate(t_rooms *nodes);
+
+
+
+//////////////////////////////////////////////////////////////
 _Bool					is_int(const char *str, _Bool strict);
 int						check_comment(char *s);
 int						link_ok(char *line, t_lst *rms, t_lst *links);

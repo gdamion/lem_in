@@ -1,70 +1,69 @@
 #include "lem_in.h"
 
-void			parse_ants(t_valid *data, char **buffer)
+void			parse_ants(t_lem_in *lem_in, char **buffer)
 {
-	size_t		size;
+	int			size;
 
-	while ((size = get_next_line(0, &buffer)))
+	while ((size = get_next_line(0, buffer)))
 	{
 		if (size == -1)
-			terminate(ERR_READING);
+			print_error(ERR_READING);
 		if (!is_comment(*buffer))
 		{
 			if (is_int(*buffer, TRUE))
 			{
-				if ((data->ants = ft_atoi(*buffer)) < 1)
-					terminate(ERR_NUM_ANTS);	
+				if ((lem_in->ants = ft_atoi(*buffer)) < 1)
+					print_error(ERR_NUM_ANTS);	
 			}
-			else if (is_room(*buffer) || is_command(*buffer))
-				return ;
 			else
-				terminate(ERR_READING);
+				return ;
 		}
-		push_elem(*buffer, &data->data);
+		push_elem(*buffer, &lem_in->data);
 	}
 }
 
-void			parse_rooms(t_valid *data, char **buffer)
+void			parse_rooms(t_lem_in *lem_in, char **buffer)
 {
-	size_t		size;
-	int			rooms;
+	int			size;
 
-	rooms = 0;
+	size = 0;
 	while (*buffer || (size = get_next_line(0, buffer)))
 	{
 		if (size == -1)
-			terminate(ERR_READING);
-		if (!get_room(data, *buffer))
-			if (!get_command(data, *buffer))
+			print_error(ERR_READING);
+		if (!get_room(lem_in, *buffer))
+		{
+			if (!get_command(lem_in, *buffer))
+			{
 				if (!is_comment(*buffer))
+				{
 					if (is_link(*buffer))
-					{
 						return ;
-					}
 					else
-						terminate(ERR_ROOM_PARSING);
+						print_error(ERR_ROOM_PARSING);
+				}
+			}
+		}	
 		*buffer = 0;
-		push_elem(*buffer, &data->data);
+		push_elem(*buffer, &lem_in->data);
 	}
 	return ;
 }
 
-void			parse_links(t_valid *data, char **buffer)
+void			parse_links(t_lem_in *lem_in, char **buffer)
 {
-	size_t		size;
-	char		line;
-	int			rooms;
+	int			size;
 
-	rooms = 0;
-	while (*buffer || (size = get_next_line(0, &line)))
+	size = 0;
+	while (*buffer || (size = get_next_line(0, buffer)))
 	{
 		if (size == -1)
-			terminate(ERR_READING);
-		if (!get_link(data, *buffer))
+			print_error(ERR_READING);
+		if (!get_link(lem_in, *buffer))
 			if (!is_comment(*buffer))
-				terminate(ERR_ROOM_PARSING);
+				print_error(ERR_ROOM_PARSING);
 		*buffer = 0;
-		push_elem(line, &data->data);
+		push_elem(*buffer, &lem_in->data);
 		return ;
 	}
 }
@@ -78,38 +77,92 @@ void			swap_names(char **names, int a, int b)
 	names[b] = temp;
 }
 
-void			check_duplicate(t_valid *data, )
+void			rooms_duplicate(t_rooms *nodes)
 {
-	
+	t_rooms		*temp;
+
+	temp = nodes->next;
+	while (temp)
+	{
+		if (!ft_strcmp(nodes->name, temp->name))
+			print_error(ERR_ROOM_DUPLICATE);
+		if (nodes->x == temp->x && nodes->y == temp->y)
+			print_error(ERR_ROOM_DUPLICATE);
+		temp = temp->next;
+	}
 }
 
-char			**set_names(t_valid *data)
+void			links_duplicate(t_links *links)
+{
+	t_links		*temp;
+
+	temp = links->next;
+	while (temp)
+	{
+		if ((!ft_strcmp(links->a, temp->a) && !ft_strcmp(links->b, temp->b)) ||
+			(!ft_strcmp(links->a, temp->b) && !ft_strcmp(links->b, temp->a)))
+			print_error(ERR_LINK_DUPLICATE);
+		temp = temp->next;
+	}
+}
+
+_Bool		**init_matrix(int rooms)
+{
+	int		a;
+	_Bool	**matrix;
+
+	a = 0;
+	if (!(matrix = (_Bool**)malloc(sizeof(_Bool*) * rooms)))
+		print_error(ERR_LINE_INIT);
+	while (a < rooms)
+	{
+		if (!(matrix[a] = (_Bool*)malloc(sizeof(_Bool) * rooms)))
+		{
+			while (--a >= 0)
+				free(matrix[a]);
+			print_error(ERR_MATRIX_INIT);
+		}
+		ft_bzero(matrix[a], sizeof(char) * rooms);
+		a++;
+	}
+	return (matrix);
+}
+
+char			**set_names(t_lem_in *lem_in, t_rooms *nodes)
 {
 	int			i;
 	char		**names;
 	
 	i = 0;
-	names = ft_wordsnew(data->rooms);
-	while (i < data->rooms)
-		names[i++] = data->nodes->line;
-	swap_names(names, 0, data->start);
-	swap_names(names, data->rooms - 1, data->end);
+	names = ft_wordsnew(lem_in->rooms);
+	while (i < lem_in->rooms)
+	{
+		names[i] = nodes->name;
+		nodes = nodes->next;
+		i++;
+	}
+	swap_names(names, 0, lem_in->start);
+	swap_names(names, lem_in->rooms - 1, lem_in->end);
+	return (names);
 }
 
 t_lem_in		*get_antshill(void)
 {
 	char		*buffer;
 	t_lem_in	*lem_in;
-	t_valid		*data;
 
 	buffer = 0;
 	if (INIT_LEM_IN)
-		terminate(ERR_LEM_IN_INIT);
-	parse_ants(data, &buffer);
-	parse_rooms(data, &buffer);
-	lem_in->names = set_names(data);
+		print_error(ERR_LEM_IN_INIT);
+	parse_ants(lem_in, &buffer);
+	ft_printf("------ %d ------\n", lem_in->ants);
+	parse_rooms(lem_in, &buffer);
+	lem_in->names = set_names(lem_in, lem_in->nodes);
 	lem_in->matrix = init_matrix(lem_in->rooms);
 	if (!lem_in->start || !lem_in->end)
-		terminate(ERR_START_END_ROOM);
+		print_error(ERR_START_END_ROOM);
 	parse_links(lem_in, &buffer);
+	if (!lem_in->links)
+		print_error(ERR_NO_LINKS);
+	return (lem_in);
 }

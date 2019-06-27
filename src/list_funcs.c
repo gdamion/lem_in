@@ -10,30 +10,28 @@ void		add_elem(char *line, t_lst **lst)
 	*lst = new;
 }
 
-int			is_integer(char *s)
-{
-	char	*new;
-	int		result;
-	int		integer;
-
-	integer = ft_atoi(s);
-	new = ft_itoa(integer);
-	if (!(result = ft_strcmp(new, s)))
-		terminate(ERR_READING);
-	free(new);
-	return (integer);
-}
-
-void		add_rooms(char **table, t_rooms **rooms)
+void		add_room(char **table, t_rooms **rooms)
 {
 	t_rooms	*new;
 
 	new = ft_memalloc(sizeof(t_rooms));
-	new->name = valid_name(table[0]);
+	if (valid_name(table[0]))
+		new->name = table[0];
 	new->x = is_integer(table[1]);
 	new->y = is_integer(table[2]);
 	new->next = *rooms;
 	*rooms = new;
+}
+
+void		add_link(char **table, t_links **links)
+{
+	t_links	*new;
+
+	new = ft_memalloc(sizeof(t_links));
+	new->a = table[0];
+	new->b = table[1];
+	new->next = *links;
+	*links = new;
 }
 
 void		push_elem(char *line, t_lst **lst)

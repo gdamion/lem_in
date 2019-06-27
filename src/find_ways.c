@@ -1,27 +1,5 @@
 #include "lem_in.h"
 
-_Bool		**init_matrix(int rooms)
-{
-	int		a;
-	_Bool	**matrix;
-
-	a = 0;
-	if (!(matrix = (_Bool**)malloc(sizeof(_Bool*) * rooms)))
-		print_error(ERR_LINE_INIT);
-	while (a < rooms)
-	{
-		if (!(matrix[a] = (_Bool*)malloc(sizeof(_Bool) * rooms)))
-		{
-			while (--a >= 0)
-				free(matrix[a]);
-			print_error(ERR_MATRIX_INIT);
-		}
-		ft_bzero(matrix[a], sizeof(char) * rooms);
-		a++;
-	}
-	return (matrix);
-}
-
 void		cpy_ways(void)
 {
 	int		i;
