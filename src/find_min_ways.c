@@ -79,19 +79,19 @@ int			check_performance(void)
 	return (perfomance(sum_len, g_lem_in->ants, counter));
 }
 
-void		min_ways(void)
+void		find_ways(void)
 {
 	int		error;
 	int		performance;
 	int		min_performance;
 
 	error = ERROR;
-	g_np = init_matrix();
-	g_mnp = init_matrix();
+	g_np = init_matrix(g_lem_in->rooms);
+	g_mnp = init_matrix(g_lem_in->rooms);
 	min_performance = MAX_INT;
 	while (error)
 	{
-		if (!find_ways())
+		if (!find_paths())
 			break ;
 		update_ways();
 		get_residual_network();

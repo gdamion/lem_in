@@ -1,53 +1,31 @@
 #include "lem_in.h"
 
-void	free_t_valid(t_valid *me)
+void		clean_matrix(_Bool ***m)
 {
-	free_lst(me->rooms, 0);
-	free_lst(me->links, 0);
-	free(me->names);
-	free(me);
+	int i;
+
+	i = 0;
+	if (!(m && *m))
+		return ;
+	while (i < g_lem_in->rooms)
+		free((*m)[i++]);
+	free(*m);
 }
 
-int		del_parse(char **mas, int back)
+int			project_free(char *massage)
 {
-	char **start;
-
-	start = mas;
-	while (*mas)
+	if (g_np)
+		clean_matrix(&g_np);
+	if (g_mnp)
+		clean_matrix(&g_mnp);
+	if (g_lem_in)
 	{
-		free(*mas);
-		++mas;
+		clean_matrix(&g_lem_in->matrix);
+		free_words(&g_lem_in->names);
+		ft_strdel(&g_lem_in->status);
+		free(g_lem_in);
 	}
-	free(start);
-	return (back);
-}
-
-int		free_lst(t_lst *me, char stat)
-{
-	t_lst *next;
-
-	while (me)
-	{
-		next = me->next;
-		if (stat)
-			free(me->line);
-		free(me);
-		me = next;
-	}
-	return (1);
-}
-
-int		free_nodes(t_node **me)
-{
-	t_node **i;
-
-	i = me;
-	while (*i)
-	{
-		free((*i)->name);
-		free(*i);
-		++i;
-	}
-	free(me);
-	return (1);
+	if (massage)
+		print_error(massage);
+	exit(0);
 }

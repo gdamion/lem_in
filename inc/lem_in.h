@@ -32,14 +32,15 @@
 # define ERROR 5
 # define TRUE 1
 # define FALSE 0
-# define STATUS(i) (g_lem_in->nodes[i]->status)
+# define STATUS(i) (g_lem_in->status[i])
 # define PATHS() ((t_path*)malloc(sizeof(t_path) * p_kit.len))
-# define INIT_LEM_IN (!(lem_in = (t_lem_in *)ft_memalloc(sizeof(t_lem_in))))
+# define INIT_LEM_IN (!(g_lem_in = (t_lem_in *)ft_memalloc(sizeof(t_lem_in))))
 
 typedef struct			s_lst
 {
-	struct s_lst		*next;
 	char				*line;
+	struct s_lst		*next;
+	struct s_lst		*prev;
 }						t_lst;
 
 typedef struct			s_links
@@ -64,10 +65,9 @@ typedef	struct			s_lem_in
 	int					start;
 	int					rooms;
 	char				**names;
-	t_rooms				*nodes;
-	char				*links_a;
-	char				*links_b;
+	char				*status;
 	_Bool				**matrix;
+	t_rooms				*nodes;
 	t_lst				*data;
 }						t_lem_in;
 
@@ -101,7 +101,8 @@ typedef struct			s_id
 
 //////////////////////////////////////////////////////////////
 
-t_lem_in		*anthill(void);
+void			init_lem();
+t_lem_in		*get_anthill(void);
 _Bool			is_comment(char *str);
 _Bool			is_command(char *str);
 _Bool			is_link(char *str);
@@ -116,9 +117,11 @@ _Bool			get_link(t_lem_in *lem_in, char *str);
 void			add_room(char **table, t_rooms **rooms);
 void			add_link(char **table, t_links **links);
 void			rooms_duplicate(t_rooms *nodes);
-char			**set_names(t_lem_in *lem_in, t_rooms *nodes);
+char			**set_names(t_lem_in *lem_in, t_rooms **nodes);
 
-
+void			output(t_lst **data);
+int				project_free(char *massage);
+void			clean_matrix(_Bool ***m);
 
 //////////////////////////////////////////////////////////////
 
@@ -127,7 +130,7 @@ int						check_comment(char *s);
 int						link_ok(char *line, t_lst *rms, t_lst *links);
 int						room_exist(char *line, t_lst *list, int stat);
 
-void					add_elem(char *line, t_lst **lst);
+void					add_elem(char **line, t_lst **lst);
 void					push_elem(char *line, t_lst **lst);
 
 t_lem_in				*get_anthill(void);
@@ -135,13 +138,13 @@ t_lem_in				*get_anthill(void);
 int						del_parse(char **mas, int back);
 int						free_lst(t_lst *me, char stat);
 
-void					min_ways(void);
+int						find_paths(void);
+void					find_ways(void);
 int						check_performance(void);
 int						perfomance(int sum_len, int ants, int n_paths);
 void					update_ways(void);
 int						get_lenght(int i);
 
-int						find_ways(void);
 void					get_residual_network(void);
 void					set_path(t_room *path);
 void					cpy_ways(void);

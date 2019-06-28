@@ -20,7 +20,16 @@ SOURCES_LIST =	main.c \
 				additional.c \
 				is.c \
 				utilities.c \
-				add.c
+				add.c \
+				find_min_ways.c \
+				find_path.c \
+				print_steps.c \
+				push_ants.c \
+				find_ways.c \
+				path_queue.c \
+				clean.c \
+				paths_kit.c
+
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 

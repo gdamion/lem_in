@@ -50,7 +50,7 @@ t_room		*init_queue(int new_id, int prev_id, t_room *prev)
 			prev = prev->prev;
 			free(buf);
 		}
-		print_error();
+		project_free("ERROR: Queue initialize");
 	}
 	q->next = NULL;
 	q->id = new_id;

@@ -25,3 +25,51 @@ _Bool	valid_name(char *str)
 	}
 	return (FALSE);
 }
+
+void		init_lem()
+{
+	if (INIT_LEM_IN)
+		project_free(ERR_LEM_IN_INIT);
+	ft_bzero(g_lem_in, sizeof(t_lem_in));
+	g_lem_in->start = -1;
+	g_lem_in->end = -1;
+}
+
+_Bool		**init_matrix(int rooms)
+{
+	int		a;
+	_Bool	**matrix;
+
+	a = 0;
+	if (!(matrix = (_Bool**)malloc(sizeof(_Bool*) * rooms)))
+		project_free(ERR_LINE_INIT);
+	while (a < rooms)
+	{
+		if (!(matrix[a] = (_Bool*)malloc(sizeof(_Bool) * rooms)))
+		{
+			while (--a >= 0)
+				free(matrix[a]);
+			project_free(ERR_MATRIX_INIT);
+		}
+		ft_bzero(matrix[a], sizeof(char) * rooms);
+		a++;
+	}
+	return (matrix);
+}
+
+void		output(t_lst **data)
+{
+	t_lst	*temp;
+
+	while ((*data)->next)
+		(*data) = (*data)->next;
+	while ((*data))
+	{
+		ft_printf("%s\n", (*data)->line);
+		ft_strdel(&((*data)->line));
+		temp = (*data);
+		(*data) = (*data)->prev;
+		free(temp);
+	}
+	ft_printf("\n");
+}

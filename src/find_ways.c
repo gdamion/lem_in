@@ -45,15 +45,15 @@ void		get_residual_network(void)
 		j = 0;
 		while (j < g_lem_in->rooms)
 		{
-			if (g_lem_in->links[i][j] && (int)g_np[i][j])
-				g_lem_in->links[i][j] = FALSE;
+			if (g_lem_in->matrix[i][j] && (int)g_np[i][j])
+				g_lem_in->matrix[i][j] = FALSE;
 			j++;
 		}
 		i++;
 	}
 }
 
-int			find_ways(void)
+int			find_paths(void)
 {
 	t_room	*path;
 

@@ -13,7 +13,7 @@ t_room		*record_path(t_room *q)
 		if (q->id == buf_id && q->id &&
 			q->id != (g_lem_in->rooms - 1))
 		{
-			g_lem_in->nodes[q->id]->status = TRUE;
+			g_lem_in->status[q->id] = TRUE;
 			buf_id = q->from;
 			q = q->prev;
 		}
@@ -30,8 +30,8 @@ _Bool		cross(int prev, int for_check)
 	s = 0;
 	while (s < g_lem_in->rooms)
 	{
-		if (s && s != prev && g_lem_in->links[for_check][s] \
-							&& g_lem_in->nodes[s]->status)
+		if (s && s != prev && g_lem_in->matrix[for_check][s]
+							&& g_lem_in->status[s])
 			return (TRUE);
 		s++;
 	}
@@ -62,14 +62,14 @@ t_room		*find_path(int i, int j)
 		i = q->id;
 		j = 0;
 		while (++j < g_lem_in->rooms)
-			if (g_lem_in->links[i][j] && i != j && if_q_empty(q_st->next, j))
+			if (g_lem_in->matrix[i][j] && i != j && if_q_empty(q_st->next, j))
 			{
 				if (STATUS(j) == 0 || (STATUS(i) == 1 && STATUS(j) == 1))
 					q_push(q, j, i);
 				else if (STATUS(j) == 1)
 					cross(i, j) ? (q_push(q, j, i)) : 1;
 			}
-		if (g_lem_in->links[i][--j])
+		if (g_lem_in->matrix[i][--j])
 			return (record_path(q));
 		q = q->next;
 	}

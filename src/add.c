@@ -1,12 +1,14 @@
 #include "lem_in.h"
 
-void		add_elem(char *line, t_lst **lst)
+void		add_elem(char **line, t_lst **lst)
 {
 	t_lst	*new;
 
 	new = ft_memalloc(sizeof(t_lst));
+	new->line = *line;
+	if (*lst)
+		(*lst)->prev = new;
 	new->next = *lst;
-	new->line = line;
 	*lst = new;
 }
 
@@ -18,9 +20,11 @@ void		add_room(char **table, t_rooms **rooms)
 	if (valid_name(table[0]))
 		new->name = table[0];
 	else
-		print_error(ERR_ILLEGAL_NAME);
+		project_free(ERR_ILLEGAL_NAME);
 	new->x = is_integer(table[1]);
 	new->y = is_integer(table[2]);
+	ft_strdel(&(table[1]));
+	ft_strdel(&(table[2]));
 	new->next = *rooms;
 	*rooms = new;
 }

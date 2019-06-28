@@ -18,7 +18,7 @@ _Bool				is_link(char *str)
 	char			**table;
 
 	if (!(table = ft_strsplit(str, '-')))
-		print_error(ERR_ROOM_PARSING);
+		project_free(ERR_ROOM_PARSING);
 	if (row_count(table) == 2)
 	{
 		free_words(&table);
@@ -52,7 +52,7 @@ int					is_integer(char *s)
 	new = ft_itoa(integer);
 	result = ft_strcmp(new, s);
 	if (result)
-		print_error(new);
+		project_free(new);
 	free(new);
 	return (integer);
 }

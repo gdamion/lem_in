@@ -7,7 +7,7 @@ void			parse_ants(t_lem_in *lem_in, char **buffer)
 	while ((size = get_next_line(0, buffer)))
 	{
 		if (size == -1)
-			print_error(ERR_READING);
+			project_free(ERR_READING);
 		if (!is_comment(*buffer))
 		{
 			if (is_int(*buffer, TRUE))
@@ -15,7 +15,7 @@ void			parse_ants(t_lem_in *lem_in, char **buffer)
 			else
 				return ;
 		}
-		add_elem(*buffer, &lem_in->data);
+		add_elem(buffer, &lem_in->data);
 	}
 }
 
@@ -27,7 +27,7 @@ void			parse_rooms(t_lem_in *lem_in, char **buffer)
 	while (*buffer || (size = get_next_line(0, buffer)))
 	{
 		if (size == -1)
-			print_error(ERR_READING);
+			project_free(ERR_READING);
 		if (!get_command(lem_in, *buffer))
 		{
 			if (!is_comment(*buffer))
@@ -37,12 +37,12 @@ void			parse_rooms(t_lem_in *lem_in, char **buffer)
 					if (is_link(*buffer))
 						return ;
 					else
-						print_error(ERR_ROOM_PARSING);
+						project_free(ERR_ROOM_PARSING);
 				}
 			}
 		}
+		add_elem(buffer, &lem_in->data);
 		*buffer = 0;
-		add_elem(*buffer, &lem_in->data);
 	}
 	return ;
 }
@@ -55,37 +55,31 @@ void			parse_links(t_lem_in *lem_in, char **buffer)
 	while (*buffer || (size = get_next_line(0, buffer)))
 	{
 		if (size == -1)
-			print_error(ERR_READING);
+			project_free(ERR_READING);
 		if (!is_comment(*buffer))
 			if (!get_link(lem_in, *buffer))
-				print_error(ERR_ROOM_PARSING);
+				project_free(ERR_ROOM_PARSING);
+		add_elem(buffer, &lem_in->data);
 		*buffer = 0;
-		add_elem(*buffer, &lem_in->data);
 	}
 	return ;
 }
 
-t_lem_in		*anthill(void)
+t_lem_in		*get_anthill(void)
 {
 	char		*buffer;
-	t_lem_in	*lem_in;
 
 	buffer = 0;
-	if (INIT_LEM_IN)
-		print_error(ERR_LEM_IN_INIT);
-	ft_bzero(lem_in, sizeof(t_lem_in));
-	lem_in->start = -1;
-	lem_in->end = -1;
-	parse_ants(lem_in, &buffer);
-	if (lem_in->ants < 1)
-		print_error(ERR_NUM_ANTS);
-	parse_rooms(lem_in, &buffer);
-	if (lem_in->start == -1 || lem_in->end == -1)
-		print_error(ERR_START_END_ROOM);
-	lem_in->names = set_names(lem_in, lem_in->nodes);
-	lem_in->matrix = init_matrix(lem_in->rooms);
-	parse_links(lem_in, &buffer);
-	if (!lem_in->links_a || !lem_in->links_b)
-		print_error(ERR_NO_LINKS);
-	return (lem_in);
+	init_lem();
+	parse_ants(g_lem_in, &buffer);
+	if (g_lem_in->ants < 1)
+		project_free(ERR_NUM_ANTS);
+	parse_rooms(g_lem_in, &buffer);
+	if (g_lem_in->start == -1 || g_lem_in->end == -1)
+		project_free(ERR_START_END_ROOM);
+	g_lem_in->names = set_names(g_lem_in, &g_lem_in->nodes);
+	g_lem_in->status = ft_strnew(g_lem_in->rooms);
+	g_lem_in->matrix = init_matrix(g_lem_in->rooms);
+	parse_links(g_lem_in, &buffer);
+	return (g_lem_in);
 }
