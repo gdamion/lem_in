@@ -51,8 +51,8 @@ int			perfomance(int sum_len, int ants, int n_paths)
 {
 	int steps;
 
-	steps = (sum_len + ants) / n_paths;
-	if (ants % n_paths)
+	steps = (sum_len + ants) / n_paths - 1;
+	if (!(ants % n_paths))
 		return (steps);
 	else
 		return (steps + 1);
@@ -82,24 +82,24 @@ int			check_performance(void)
 void		find_ways(void)
 {
 	int		error;
-	int		performance;
-	int		min_performance;
+	int		perf;
+	int		min_perf;
 
 	error = ERROR;
 	g_np = init_matrix(g_lem_in->rooms);
 	g_mnp = init_matrix(g_lem_in->rooms);
-	min_performance = MAX_INT;
+	min_perf = MAX_INT;
 	while (error)
 	{
 		if (!find_paths())
 			break ;
 		update_ways();
 		get_residual_network();
-		performance = check_performance();
-		if (performance < min_performance)
+		perf = check_performance();
+		if (perf < min_perf)
 		{
 			cpy_ways();
-			min_performance = performance;
+			min_perf = perf;
 		}
 		else
 			error--;
