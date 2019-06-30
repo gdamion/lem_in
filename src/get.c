@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/30 16:43:07 by gdamion-          #+#    #+#             */
+/*   Updated: 2019/06/30 17:00:43 by gdamion-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
 static void		mark_matrix(char **table, _Bool **matrix, char **names)
@@ -5,7 +17,7 @@ static void		mark_matrix(char **table, _Bool **matrix, char **names)
 	int	i;
 	int	end;
 	int	start;
-	
+
 	i = 0;
 	end = -1;
 	start = -1;
@@ -28,7 +40,7 @@ static void		mark_matrix(char **table, _Bool **matrix, char **names)
 		project_free(ERR_LINK_DUPLICATE);
 }
 
-_Bool		get_link(t_lem_in *lem_in, char *str)
+_Bool			get_link(t_lem_in *lem_in, char *str)
 {
 	_Bool	is_link;
 	char	**table;
@@ -45,7 +57,7 @@ _Bool		get_link(t_lem_in *lem_in, char *str)
 	return (is_link);
 }
 
-_Bool		get_command(t_lem_in *lem_in, char *str)
+_Bool			get_command(t_lem_in *lem_in, char *str)
 {
 	if (str)
 	{
@@ -69,7 +81,7 @@ _Bool		get_command(t_lem_in *lem_in, char *str)
 	return (FALSE);
 }
 
-_Bool		get_room(t_lem_in *lem_in, char *str)
+_Bool			get_room(t_lem_in *lem_in, char *str)
 {
 	_Bool	is_room;
 	char	**table;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   additional.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/30 16:42:42 by gdamion-          #+#    #+#             */
+/*   Updated: 2019/06/30 16:58:13 by gdamion-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
 size_t		row_count(char **table)
@@ -16,7 +28,7 @@ size_t		row_count(char **table)
 	return (size);
 }
 
-_Bool	valid_name(char *str)
+_Bool		valid_name(char *str)
 {
 	if (str && ft_strlen(str))
 	{
@@ -26,7 +38,7 @@ _Bool	valid_name(char *str)
 	return (FALSE);
 }
 
-void		init_lem()
+void		init_lem(void)
 {
 	if (INIT_LEM_IN)
 		project_free(ERR_LEM_IN_INIT);

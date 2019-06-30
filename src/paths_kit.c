@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   paths_kit.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/30 16:43:24 by gdamion-          #+#    #+#             */
+/*   Updated: 2019/06/30 17:00:57 by gdamion-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
-int			count_ways(void)
+int				count_ways(void)
 {
 	int i;
 	int cnt;
@@ -16,7 +28,7 @@ int			count_ways(void)
 	return (cnt);
 }
 
-int			path_len(int i, t_id *l_id)
+int				path_len(int i, t_id *l_id)
 {
 	int len;
 	int j;
@@ -43,7 +55,7 @@ int			path_len(int i, t_id *l_id)
 	return (len);
 }
 
-void		free_in_alloc(t_pathkit *p_kit, t_id **l_id, int *i)
+void			free_in_alloc(t_pathkit *p_kit, t_id **l_id, int *i)
 {
 	t_id *buf;
 
@@ -59,7 +71,7 @@ void		free_in_alloc(t_pathkit *p_kit, t_id **l_id, int *i)
 	project_free("FREE in alloc");
 }
 
-void		fill(t_pathkit *p_kit, t_id **l_id, int *i)
+void			fill(t_pathkit *p_kit, t_id **l_id, int *i)
 {
 	if (!(*l_id = (t_id*)malloc(sizeof(t_id))))
 		free_in_alloc(p_kit, l_id, i);

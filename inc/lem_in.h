@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/30 16:44:31 by gdamion-          #+#    #+#             */
+/*   Updated: 2019/06/30 16:57:44 by gdamion-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
 # include "libft.h"
-#include <errno.h>
+# include <errno.h>
 
 /*
 ** Lem-in message
@@ -12,7 +24,7 @@
 # define ERR_LEM_IN_INIT		"ERROR: Can\'t initialize Lem-in"
 
 /*
-** Read map
+** Types of error
 */
 
 # define ERR_LINKS				"ERROR: Invalid link(s)"
@@ -29,12 +41,20 @@
 # define ERR_ROOM_DUPLICATE		"ERROR: The duplication room"
 # define ERR_START_END_ROOM		"ERROR: No \"start\" or \"end\" room(s)"
 
+/*
+** Properties
+*/
+
 # define ERROR 5
 # define TRUE 1
 # define FALSE 0
 # define STATUS(i) (g_lem_in->status[i])
 # define PATHS() ((t_path*)malloc(sizeof(t_path) * p_kit.len))
 # define INIT_LEM_IN (!(g_lem_in = (t_lem_in *)ft_memalloc(sizeof(t_lem_in))))
+
+/*
+** Working structures
+*/
 
 typedef struct			s_lst
 {
@@ -99,31 +119,39 @@ typedef struct			s_id
 	struct s_id			*next;
 }						t_id;
 
-//////////////////////////////////////////////////////////////
+/*
+** Global variables
+*/
 
-void			init_lem();
-t_lem_in		*get_anthill(void);
-_Bool			is_comment(char *str);
-_Bool			is_command(char *str);
-_Bool			is_link(char *str);
-_Bool			is_int(const char *str, _Bool strict);
-int				is_integer(char *s);
-size_t			row_count(char **table);
-_Bool			valid_name(char *str);
+t_lem_in				*g_lem_in;
+_Bool					**g_np;
+_Bool					**g_mnp;
 
-_Bool			get_room(t_lem_in *lem_in, char *str);
-_Bool			get_command(t_lem_in *lem_in, char *str);
-_Bool			get_link(t_lem_in *lem_in, char *str);
-void			add_room(char **table, t_rooms **rooms);
-void			add_link(char **table, t_links **links);
-void			rooms_duplicate(t_rooms *nodes);
-char			**set_names(t_lem_in *lem_in, t_rooms **nodes);
+/*
+** Functions of the main program
+*/
 
-void			output(t_lst **data);
-int				project_free(char *massage);
-void			clean_matrix(_Bool ***m);
+void					init_lem();
+t_lem_in				*get_anthill(void);
+_Bool					is_comment(char *str);
+_Bool					is_command(char *str);
+_Bool					is_link(char *str);
+_Bool					is_int(const char *str, _Bool strict);
+int						is_integer(char *s);
+size_t					row_count(char **table);
+_Bool					valid_name(char *str);
 
-//////////////////////////////////////////////////////////////
+_Bool					get_room(t_lem_in *lem_in, char *str);
+_Bool					get_command(t_lem_in *lem_in, char *str);
+_Bool					get_link(t_lem_in *lem_in, char *str);
+void					add_room(char **table, t_rooms **rooms);
+void					add_link(char **table, t_links **links);
+void					rooms_duplicate(t_rooms *nodes);
+char					**set_names(t_lem_in *lem_in, t_rooms **nodes);
+
+void					output(t_lst **data);
+int						project_free(char *massage);
+void					clean_matrix(_Bool ***m);
 
 _Bool					is_int(const char *str, _Bool strict);
 int						check_comment(char *s);
@@ -171,9 +199,5 @@ void					ants_distribution(t_pathkit paths, int ants);
 
 void					print_steps(t_pathkit paths, int move, int id, \
 													int ants_start);
-
-t_lem_in	*g_lem_in;
-_Bool	**g_np;
-_Bool	**g_mnp;
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utilities.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/30 16:43:37 by gdamion-          #+#    #+#             */
+/*   Updated: 2019/06/30 16:43:37 by gdamion-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
 void			swap_names(char **names, int a, int b)
@@ -43,7 +55,7 @@ char			**set_names(t_lem_in *lem_in, t_rooms **nodes)
 	int			i;
 	char		**names;
 	t_rooms		*temp;
-	
+
 	i = lem_in->rooms - 1;
 	names = ft_wordsnew(lem_in->rooms);
 	while (i >= 0)

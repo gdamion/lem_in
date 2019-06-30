@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   is.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/30 16:43:11 by gdamion-          #+#    #+#             */
+/*   Updated: 2019/06/30 16:59:48 by gdamion-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
-_Bool				is_comment(char *str)
+_Bool	is_comment(char *str)
 {
 	if (str)
 	{
@@ -13,7 +25,7 @@ _Bool				is_comment(char *str)
 	return (FALSE);
 }
 
-_Bool				is_link(char *str)
+_Bool	is_link(char *str)
 {
 	char			**table;
 
@@ -31,7 +43,7 @@ _Bool				is_link(char *str)
 	}
 }
 
-_Bool				is_command(char *str)
+_Bool	is_command(char *str)
 {
 	if (str)
 	{
@@ -42,7 +54,7 @@ _Bool				is_command(char *str)
 	return (FALSE);
 }
 
-int					is_integer(char *s)
+int		is_integer(char *s)
 {
 	char			*new;
 	int				result;
@@ -57,8 +69,7 @@ int					is_integer(char *s)
 	return (integer);
 }
 
-
-_Bool				is_int(const char *str, _Bool strict)
+_Bool	is_int(const char *str, _Bool strict)
 {
 	unsigned int	result;
 	unsigned int	border;
