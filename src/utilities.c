@@ -55,6 +55,8 @@ char			**set_names(t_lem_in *lem_in, t_rooms **nodes)
 		i--;
 	}
 	swap_names(names, 0, lem_in->start - 1);
+	if (g_lem_in->end == 1)
+		g_lem_in->end = lem_in->start;
 	swap_names(names, lem_in->rooms - 1, lem_in->end - 1);
 	return (names);
 }
