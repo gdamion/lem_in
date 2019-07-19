@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:44:31 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/06/30 16:57:44 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/19 16:18:45 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@
 /*
 ** Properties
 */
-
 # define ERROR 5
 # define TRUE 1
 # define FALSE 0
@@ -55,7 +54,6 @@
 /*
 ** Working structures
 */
-
 typedef struct			s_lst
 {
 	char				*line;
@@ -95,6 +93,7 @@ typedef struct			s_room
 {
 	int					id;
 	int					from;
+	_Bool				entr;
 	struct s_room		*next;
 	struct s_room		*prev;
 }						t_room;
@@ -122,7 +121,6 @@ typedef struct			s_id
 /*
 ** Global variables
 */
-
 t_lem_in				*g_lem_in;
 _Bool					**g_np;
 _Bool					**g_mnp;
@@ -130,7 +128,6 @@ _Bool					**g_mnp;
 /*
 ** Functions of the main program
 */
-
 void					init_lem();
 t_lem_in				*get_anthill(void);
 _Bool					is_comment(char *str);
@@ -182,9 +179,10 @@ t_room					*find_path(int i, int j);
 _Bool					cross(int prev, int for_check);
 t_room					*record_path(t_room *q);
 
-t_room					*init_queue(int new_id, int prev_id, t_room *prev);
+t_room					*init_queue(int new_id, int prev_id, t_room *prev,
+															_Bool enter);
 _Bool					queue_pop(t_room **q);
-void					q_push(t_room *q, int new_id, int prev_id);
+void					q_push(t_room *q, int new_id, int prev_id, _Bool enter);
 _Bool					if_q_empty(t_room *q, int id);
 
 t_pathkit				set_paths_kit(void);

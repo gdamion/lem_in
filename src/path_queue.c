@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:43:19 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/06/30 16:43:20 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/19 15:35:01 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ _Bool		if_q_empty(t_room *q, int id)
 	return (TRUE);
 }
 
-void		q_push(t_room *q, int new_id, int prev_id)
+void		q_push(t_room *q, int new_id, int prev_id, _Bool enter)
 {
 	while (q->next)
 		q = q->next;
-	q->next = init_queue(new_id, prev_id, q);
+	q->next = init_queue(new_id, prev_id, q, enter);
 }
 
 _Bool		queue_pop(t_room **q)
@@ -49,7 +49,7 @@ _Bool		queue_pop(t_room **q)
 		return (FALSE);
 }
 
-t_room		*init_queue(int new_id, int prev_id, t_room *prev)
+t_room		*init_queue(int new_id, int prev_id, t_room *prev, _Bool enter)
 {
 	t_room	*q;
 	t_room	*buf;
@@ -66,6 +66,7 @@ t_room		*init_queue(int new_id, int prev_id, t_room *prev)
 	}
 	q->next = NULL;
 	q->id = new_id;
+	q->entr = enter;
 	q->prev = prev;
 	q->from = prev_id;
 	return (q);
