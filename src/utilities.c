@@ -43,7 +43,8 @@ char			**set_names(t_rooms **nodes)
 	t_rooms		*temp;
 
 	i = g_lem_in->rooms - 1;
-	names = ft_wordsnew(g_lem_in->rooms);
+	if (!(names = ft_wordsnew(g_lem_in->rooms)))
+		project_free(ERR_ALLOC);
 	while (i >= 0)
 	{
 		temp = *nodes;
