@@ -32,12 +32,14 @@ void		add_room(char **table, t_rooms **rooms)
 	if (!(new = ft_memalloc(sizeof(t_rooms))))
 		project_free(ERR_ALLOC);
 	if (valid_name(table[0]))
-		new->name = ft_strdup(table[0]);
+		new->name = table[0];
 	else
 		project_free(ERR_ILLEGAL_NAME);
 	new->x = is_integer(table[1]);
 	new->y = is_integer(table[2]);
-	free_words(&table);
+	ft_strdel(&(table[1]));
+	ft_strdel(&(table[2]));
+	free(table);
 	new->next = *rooms;
 	*rooms = new;
 }

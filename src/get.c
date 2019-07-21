@@ -12,7 +12,18 @@
 
 #include "lem_in.h"
 
-static void		mark_matrix(char **table, _Bool **matrix, char **names)
+static void		mark(int start, int end)
+{
+	if (!g_lem_in->matrix[start][end] && !g_lem_in->matrix[end][start])
+	{
+		g_lem_in->matrix[start][end] = TRUE;
+		g_lem_in->matrix[end][start] = TRUE;
+	}
+	else
+		project_free(ERR_LINK_DUPLICATE);
+}
+
+static void		mark_matrix(char **table)
 {
 	int	i;
 	int	end;
@@ -21,27 +32,20 @@ static void		mark_matrix(char **table, _Bool **matrix, char **names)
 	i = 0;
 	end = -1;
 	start = -1;
-	while ((start == -1 || end == -1) && names[i])
+	while ((start == -1 || end == -1) && g_lem_in->names[i])
 	{
-		if (!ft_strcmp(table[0], names[i]))
+		if (!ft_strcmp(table[0], g_lem_in->names[i]))
 			start = i;
-		if (!ft_strcmp(table[1], names[i]))
+		if (!ft_strcmp(table[1], g_lem_in->names[i]))
 			end = i;
 		i++;
 	}
 	if (start == -1 || end == -1)
 	{
 		free_words(&table);
-		free_words(&names);
 		project_free(ERR_LINKS);
 	}
-	if (!matrix[start][end] && !matrix[end][start])
-	{
-		matrix[start][end] = TRUE;
-		matrix[end][start] = TRUE;
-	}
-	else
-		project_free(ERR_LINK_DUPLICATE);
+	mark(start, end);
 }
 
 _Bool			get_link(char *str)
@@ -54,7 +58,7 @@ _Bool			get_link(char *str)
 		project_free(ERR_ROOM_PARSING);
 	if (row_count(table) == 2)
 	{
-		mark_matrix(table, g_lem_in->matrix, g_lem_in->names);
+		mark_matrix(table);
 		is_link = TRUE;
 	}
 	free_words(&table);

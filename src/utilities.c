@@ -53,6 +53,8 @@ char			**set_names(t_rooms **nodes)
 		free(temp);
 		i--;
 	}
+	if (g_lem_in->end > g_lem_in->rooms || g_lem_in->start > g_lem_in->rooms)
+		project_free(ERR_START_END_ROOM);
 	swap_names(names, 0, g_lem_in->start - 1);
 	if (g_lem_in->end == 1)
 		g_lem_in->end = g_lem_in->start;
