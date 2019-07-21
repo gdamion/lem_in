@@ -30,7 +30,11 @@ static void		mark_matrix(char **table, _Bool **matrix, char **names)
 		i++;
 	}
 	if (start == -1 || end == -1)
+	{
+		free_words(&table);
+		free_words(&names);
 		project_free(ERR_LINKS);
+	}
 	if (!matrix[start][end] && !matrix[end][start])
 	{
 		matrix[start][end] = TRUE;

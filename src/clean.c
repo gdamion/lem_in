@@ -28,7 +28,7 @@ static void	free_nodes(t_rooms **nodes)
 {
 	t_rooms	*temp;
 
-	if (nodes)
+	if (!nodes)
 		return ;
 	while (*nodes)
 	{
@@ -36,6 +36,22 @@ static void	free_nodes(t_rooms **nodes)
 		*nodes = (*nodes)->next;
 		if (temp->name)
 			ft_strdel(&temp->name);
+		free(temp);
+	}
+}
+
+static void	free_data(t_lst **data)
+{
+	t_lst	*temp;
+
+	if (!data)
+		return ;
+	while (*data)
+	{
+		temp = *data;
+		*data = (*data)->next;
+		if (temp->line)
+			ft_strdel(&(temp->line));
 		free(temp);
 	}
 }
@@ -48,6 +64,7 @@ int			project_free(char *message)
 		clean_matrix(&g_mnp);
 	if (g_lem_in)
 	{
+		free_data(&g_lem_in->data);
 		free_nodes(&g_lem_in->nodes);
 		clean_matrix(&g_lem_in->matrix);
 		free_words(&g_lem_in->names);
