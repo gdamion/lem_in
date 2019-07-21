@@ -16,7 +16,8 @@ void		add_elem(char **line, t_lst **lst)
 {
 	t_lst	*new;
 
-	new = ft_memalloc(sizeof(t_lst));
+	if (!(new = ft_memalloc(sizeof(t_lst))))
+		project_free(ERR_ALLOC);
 	new->line = *line;
 	if (*lst)
 		(*lst)->prev = new;
@@ -28,7 +29,8 @@ void		add_room(char **table, t_rooms **rooms)
 {
 	t_rooms	*new;
 
-	new = ft_memalloc(sizeof(t_rooms));
+	if (!(new = ft_memalloc(sizeof(t_rooms))))
+		project_free(ERR_ALLOC);
 	if (valid_name(table[0]))
 		new->name = table[0];
 	else
@@ -37,6 +39,7 @@ void		add_room(char **table, t_rooms **rooms)
 	new->y = is_integer(table[2]);
 	ft_strdel(&(table[1]));
 	ft_strdel(&(table[2]));
+	free(table);
 	new->next = *rooms;
 	*rooms = new;
 }
@@ -45,7 +48,8 @@ void		add_link(char **table, t_links **links)
 {
 	t_links	*new;
 
-	new = ft_memalloc(sizeof(t_links));
+	if (!(new = ft_memalloc(sizeof(t_links))))
+		project_free(ERR_ALLOC);
 	new->a = table[0];
 	new->b = table[1];
 	new->next = *links;

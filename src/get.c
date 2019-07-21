@@ -40,7 +40,7 @@ static void		mark_matrix(char **table, _Bool **matrix, char **names)
 		project_free(ERR_LINK_DUPLICATE);
 }
 
-_Bool			get_link(t_lem_in *lem_in, char *str)
+_Bool			get_link(char *str)
 {
 	_Bool	is_link;
 	char	**table;
@@ -50,29 +50,29 @@ _Bool			get_link(t_lem_in *lem_in, char *str)
 		project_free(ERR_ROOM_PARSING);
 	if (row_count(table) == 2)
 	{
-		mark_matrix(table, lem_in->matrix, lem_in->names);
+		mark_matrix(table, g_lem_in->matrix, g_lem_in->names);
 		is_link = TRUE;
 	}
 	free_words(&table);
 	return (is_link);
 }
 
-_Bool			get_command(t_lem_in *lem_in, char *str)
+_Bool			get_command(char *str)
 {
 	if (str)
 	{
 		if (!ft_strcmp(str, "##start"))
 		{
-			if (lem_in->start == -1)
-				lem_in->start = lem_in->rooms + 1;
+			if (g_lem_in->start == -1)
+				g_lem_in->start = g_lem_in->rooms + 1;
 			else
 				project_free(ERR_START_ROOM);
 			return (TRUE);
 		}
 		if (!ft_strcmp(str, "##end"))
 		{
-			if (lem_in->end == -1)
-				lem_in->end = lem_in->rooms + 1;
+			if (g_lem_in->end == -1)
+				g_lem_in->end = g_lem_in->rooms + 1;
 			else
 				project_free(ERR_END_ROOM);
 			return (TRUE);
@@ -81,7 +81,7 @@ _Bool			get_command(t_lem_in *lem_in, char *str)
 	return (FALSE);
 }
 
-_Bool			get_room(t_lem_in *lem_in, char *str)
+_Bool			get_room(char *str)
 {
 	_Bool	is_room;
 	char	**table;
@@ -91,10 +91,10 @@ _Bool			get_room(t_lem_in *lem_in, char *str)
 		project_free(ERR_ROOM_PARSING);
 	if (row_count(table) == 3)
 	{
-		add_room(table, &lem_in->nodes);
-		rooms_duplicate(lem_in->nodes);
+		add_room(table, &g_lem_in->nodes);
+		rooms_duplicate(g_lem_in->nodes);
 		is_room = TRUE;
-		lem_in->rooms++;
+		g_lem_in->rooms++;
 	}
 	if (!is_room)
 		free_words(&table);

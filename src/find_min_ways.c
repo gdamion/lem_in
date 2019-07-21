@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-int			get_lenght(int i)
+static int	get_lenght(int i)
 {
 	int		from;
 	int		len;
@@ -37,7 +37,7 @@ int			get_lenght(int i)
 	return (len);
 }
 
-void		update_ways(void)
+static void	update_ways(void)
 {
 	int		i;
 	int		j;
@@ -59,9 +59,9 @@ void		update_ways(void)
 	}
 }
 
-int			perfomance(int sum_len, int ants, int n_paths)
+static int	perfomance(int sum_len, int ants, int n_paths)
 {
-	int steps;
+	int		steps;
 
 	steps = (sum_len + ants) / n_paths - 1;
 	if (!(ants % n_paths))
@@ -70,11 +70,11 @@ int			perfomance(int sum_len, int ants, int n_paths)
 		return (steps + 1);
 }
 
-int			check_performance(void)
+static int	check_performance(void)
 {
-	int	i;
-	int	sum_len;
-	int	counter;
+	int		i;
+	int		sum_len;
+	int		counter;
 
 	i = 0;
 	sum_len = 0;

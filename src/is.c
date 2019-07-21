@@ -63,11 +63,9 @@ int		is_integer(char *s)
 	integer = ft_atoi(s);
 	new = ft_itoa(integer);
 	result = ft_strcmp(new, s);
+	free(new);
 	if (result)
-	{
-		free(new);
 		project_free(ERR_WRONG_NUM);
-	}
 	return (integer);
 }
 

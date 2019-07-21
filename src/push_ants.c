@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-void		ants_distribution(t_pathkit paths, int ants)
+static void	ants_distribution(t_pathkit paths, int ants)
 {
 	int		i;
 	int		j;
@@ -36,7 +36,7 @@ void		ants_distribution(t_pathkit paths, int ants)
 		paths.paths[ants-- - 1].ants++;
 }
 
-void		set_squads(t_pathkit paths)
+static void	set_squads(t_pathkit paths)
 {
 	int		i;
 	int		interval;
@@ -50,7 +50,7 @@ void		set_squads(t_pathkit paths)
 	}
 }
 
-void		push_squads(t_pathkit paths)
+static void	push_squads(t_pathkit paths)
 {
 	int		i;
 	int		move;

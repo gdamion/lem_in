@@ -142,17 +142,16 @@ int						is_integer(char *s);
 size_t					row_count(char **table);
 _Bool					valid_name(char *str);
 
-_Bool					get_room(t_lem_in *lem_in, char *str);
-_Bool					get_command(t_lem_in *lem_in, char *str);
-_Bool					get_link(t_lem_in *lem_in, char *str);
+_Bool					get_room(char *str);
+_Bool					get_command(char *str);
+_Bool					get_link(char *str);
 void					add_room(char **table, t_rooms **rooms);
 void					add_link(char **table, t_links **links);
 void					rooms_duplicate(t_rooms *nodes);
-char					**set_names(t_lem_in *lem_in, t_rooms **nodes);
+char					**set_names(t_rooms **nodes);
 
 void					output(t_lst **data);
 int						project_free(char *massage);
-void					clean_matrix(_Bool ***m);
 
 _Bool					is_int(const char *str, _Bool strict);
 int						check_comment(char *s);
@@ -169,19 +168,12 @@ int						free_lst(t_lst *me, char stat);
 
 int						find_paths(void);
 void					find_ways(void);
-int						check_performance(void);
-int						perfomance(int sum_len, int ants, int n_paths);
-void					update_ways(void);
-int						get_lenght(int i);
+void					cpy_ways(void);
 
 void					get_residual_network(void);
-void					set_path(t_room *path);
-void					cpy_ways(void);
 _Bool					**init_matrix(int rooms);
 
 t_room					*find_path(int i, int j);
-_Bool					cross(int prev, int for_check);
-t_room					*record_path(t_room *q);
 
 t_room					*init_queue(int new_id, int prev_id, t_room *prev,
 															_Bool enter);
@@ -190,14 +182,8 @@ void					q_push(t_room *q, int new_id, int prev_id, _Bool enter);
 _Bool					if_q_empty(t_room *q, int id);
 
 t_pathkit				set_paths_kit(void);
-void					fill(t_pathkit *p_kit, t_id **l_id, int *i);
-int						path_len(int i, t_id *l_id);
-int						count_ways(void);
 
 void					push_ants(t_pathkit paths, int ants);
-void					push_squads(t_pathkit paths);
-void					set_squads(t_pathkit paths);
-void					ants_distribution(t_pathkit paths, int ants);
 
 void					print_steps(t_pathkit paths, int move, int id, \
 													int ants_start);

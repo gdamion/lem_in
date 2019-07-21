@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-int				count_ways(void)
+static int		count_ways(void)
 {
 	int i;
 	int cnt;
@@ -28,7 +28,7 @@ int				count_ways(void)
 	return (cnt);
 }
 
-int				path_len(int i, t_id *l_id)
+static int		path_len(int i, t_id *l_id)
 {
 	int len;
 	int j;
@@ -55,7 +55,7 @@ int				path_len(int i, t_id *l_id)
 	return (len);
 }
 
-void			free_in_alloc(t_pathkit *p_kit, t_id **l_id, int *i)
+static void		free_in_alloc(t_pathkit *p_kit, t_id **l_id, int *i)
 {
 	t_id *buf;
 
@@ -71,7 +71,7 @@ void			free_in_alloc(t_pathkit *p_kit, t_id **l_id, int *i)
 	project_free(ERR_ALLOC);
 }
 
-void			fill(t_pathkit *p_kit, t_id **l_id, int *i)
+static void		fill(t_pathkit *p_kit, t_id **l_id, int *i)
 {
 	if (!(*l_id = (t_id*)malloc(sizeof(t_id))))
 		free_in_alloc(p_kit, l_id, i);

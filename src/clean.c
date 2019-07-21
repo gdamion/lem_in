@@ -12,9 +12,9 @@
 
 #include "lem_in.h"
 
-void		clean_matrix(_Bool ***m)
+static void	clean_matrix(_Bool ***m)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	if (!(m && *m))
@@ -22,6 +22,22 @@ void		clean_matrix(_Bool ***m)
 	while (i < g_lem_in->rooms)
 		free((*m)[i++]);
 	free(*m);
+}
+
+static void	free_nodes(t_rooms **nodes)
+{
+	t_rooms	*temp;
+
+	if (nodes)
+		return ;
+	while (*nodes)
+	{
+		temp = *nodes;
+		*nodes = (*nodes)->next;
+		if (temp->name)
+			ft_strdel(&temp->name);
+		free(temp);
+	}
 }
 
 int			project_free(char *message)
@@ -32,6 +48,7 @@ int			project_free(char *message)
 		clean_matrix(&g_mnp);
 	if (g_lem_in)
 	{
+		free_nodes(&g_lem_in->nodes);
 		clean_matrix(&g_lem_in->matrix);
 		free_words(&g_lem_in->names);
 		ft_strdel(&g_lem_in->status);

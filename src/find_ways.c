@@ -12,6 +12,25 @@
 
 #include "lem_in.h"
 
+void		get_residual_network(void)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < g_lem_in->rooms)
+	{
+		j = 0;
+		while (j < g_lem_in->rooms)
+		{
+			if (g_lem_in->matrix[i][j] && (int)g_np[i][j])
+				g_lem_in->matrix[i][j] = FALSE;
+			j++;
+		}
+		i++;
+	}
+}
+
 void		cpy_ways(void)
 {
 	int		i;
@@ -30,7 +49,7 @@ void		cpy_ways(void)
 	}
 }
 
-void		set_path(t_room *path)
+static void	set_path(t_room *path)
 {
 	t_room	*buf;
 
@@ -43,25 +62,6 @@ void		set_path(t_room *path)
 		buf = path;
 		path = path->next;
 		free(buf);
-	}
-}
-
-void		get_residual_network(void)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < g_lem_in->rooms)
-	{
-		j = 0;
-		while (j < g_lem_in->rooms)
-		{
-			if (g_lem_in->matrix[i][j] && (int)g_np[i][j])
-				g_lem_in->matrix[i][j] = FALSE;
-			j++;
-		}
-		i++;
 	}
 }
 

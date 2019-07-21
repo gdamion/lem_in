@@ -12,9 +12,9 @@
 
 #include "lem_in.h"
 
-t_room		*record_path(t_room *q)
+static t_room	*record_path(t_room *q)
 {
-	int		buf_id;
+	int			buf_id;
 
 	while (q->next)
 		q = q->next;
@@ -35,9 +35,9 @@ t_room		*record_path(t_room *q)
 	return (q);
 }
 
-_Bool		cross(int prev, int for_check)
+static _Bool	cross(int prev, int for_check)
 {
-	int		s;
+	int			s;
 
 	s = 0;
 	while (s < g_lem_in->rooms)
@@ -50,9 +50,9 @@ _Bool		cross(int prev, int for_check)
 	return (FALSE);
 }
 
-void		clean_queue(t_room *q)
+static void		clean_queue(t_room *q)
 {
-	t_room	*buf;
+	t_room		*buf;
 
 	while (q)
 	{
@@ -62,10 +62,10 @@ void		clean_queue(t_room *q)
 	}
 }
 
-t_room		*find_path(int i, int j)
+t_room			*find_path(int i, int j)
 {
-	t_room	*q;
-	t_room	*q_st;
+	t_room		*q;
+	t_room		*q_st;
 
 	q = init_queue(0, -1, NULL, 0);
 	q_st = q;
