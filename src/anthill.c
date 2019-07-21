@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:42:47 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/06/30 16:42:47 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/21 14:44:56 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void			parse_ants(t_lem_in *lem_in, char **buffer)
 				return ;
 		}
 		add_elem(buffer, &lem_in->data);
+		*buffer = 0;
 	}
 }
 

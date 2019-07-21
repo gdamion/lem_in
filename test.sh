@@ -12,8 +12,8 @@ echo "$file is a directory"
 elif [ -f "$file" ]
 then
 printf "\n${GREEN}Test the $file file:\n${CYAN}\n"
-#valgrind --le./lem_in < $file
-time ./lem_in < $file
+valgrind --leak-check=full ./lem_in < $file
+#time ./lem_in < $file
 echo -e "${GREEN}"
 read -p "Press enter to continue..."
 clear

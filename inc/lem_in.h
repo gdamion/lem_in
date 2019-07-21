@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:44:31 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/07/19 16:18:45 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/21 14:04:29 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 # define ERR_LINK_DUPLICATE		"ERROR: The duplication link"
 # define ERR_ROOM_DUPLICATE		"ERROR: The duplication room"
 # define ERR_START_END_ROOM		"ERROR: No \"start\" or \"end\" room(s)"
+# define ERR_WRONG_NUM			"ERROR: Wrong number value"
+# define ERR_ALLOC				"ERROR: Can\'t allocate memory"
+# define ERR_NO_WAY				"ERROR: No way from start to finish"
+# define ERR_WRONG_IN			"ERROR: Wrong input format"
 
 /*
 ** Properties

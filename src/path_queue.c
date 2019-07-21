@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:43:19 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/07/19 15:35:01 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/21 14:02:56 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_room		*init_queue(int new_id, int prev_id, t_room *prev, _Bool enter)
 			prev = prev->prev;
 			free(buf);
 		}
-		project_free("ERROR: Queue initialize");
+		project_free(ERR_ALLOC);
 	}
 	q->next = NULL;
 	q->id = new_id;

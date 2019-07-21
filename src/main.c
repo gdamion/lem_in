@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:43:15 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/06/30 16:43:16 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/21 14:18:04 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int			main(int ac, char **av)
 	g_mnp = 0;
 	errno = 0;
 	if (ac != 1)
-		print_error("Error");
+		print_error(ERR_WRONG_IN);
 	get_anthill();
 	find_ways();
 	p_kit = set_paths_kit();

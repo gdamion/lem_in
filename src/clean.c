@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:42:50 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/06/30 16:42:51 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/21 13:59:25 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		clean_matrix(_Bool ***m)
 	free(*m);
 }
 
-int			project_free(char *massage)
+int			project_free(char *message)
 {
 	if (g_np)
 		clean_matrix(&g_np);
@@ -37,7 +37,7 @@ int			project_free(char *massage)
 		ft_strdel(&g_lem_in->status);
 		free(g_lem_in);
 	}
-	if (massage)
-		print_error(massage);
+	if (message)
+		print_error(message);
 	exit(0);
 }

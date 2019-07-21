@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:43:24 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/07/19 16:12:06 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/21 14:01:44 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void			free_in_alloc(t_pathkit *p_kit, t_id **l_id, int *i)
 	while (--(*i) >= 0)
 		free(p_kit->paths[*i].room);
 	free(p_kit->paths);
-	project_free("FREE in alloc");
+	project_free(ERR_ALLOC);
 }
 
 void			fill(t_pathkit *p_kit, t_id **l_id, int *i)
@@ -94,8 +94,8 @@ t_pathkit		set_paths_kit(void)
 
 	i = -1;
 	l_id = NULL;
-	(!(p_kit.len = count_ways())) ? project_free("ERROR: No way") : 1;
-	!(p_kit.paths = PATHS()) ? project_free("ERROR: Can't allocate data") : 1;
+	(!(p_kit.len = count_ways())) ? project_free(ERR_NO_WAY) : 1;
+	!(p_kit.paths = PATHS()) ? project_free(ERR_ALLOC) : 1;
 	while (++i < p_kit.len)
 	{
 		fill(&p_kit, &l_id, &i);

@@ -6,7 +6,7 @@
 /*   By: gdamion- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 16:43:11 by gdamion-          #+#    #+#             */
-/*   Updated: 2019/06/30 16:59:48 by gdamion-         ###   ########.fr       */
+/*   Updated: 2019/07/21 13:45:26 by gdamion-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ int		is_integer(char *s)
 	new = ft_itoa(integer);
 	result = ft_strcmp(new, s);
 	if (result)
-		project_free(new);
-	free(new);
+	{
+		free(new);
+		project_free(ERR_WRONG_NUM);
+	}
 	return (integer);
 }
 
