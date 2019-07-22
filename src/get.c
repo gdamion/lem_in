@@ -12,40 +12,44 @@
 
 #include "lem_in.h"
 
-static void		mark(int start, int end)
+static void		get_position(char **table, int *start, int *end)
 {
+	int	i;
+
+	i = 0;
+	while ((*start == -1 || *end == -1) && g_lem_in->names[i])
+	{
+		if (!ft_strcmp(table[0], g_lem_in->names[i]))
+			*start = i;
+		if (!ft_strcmp(table[1], g_lem_in->names[i]))
+			*end = i;
+		i++;
+	}
+	if (*start == -1 || *end == -1)
+	{
+		free_words(&table);
+		project_free(ERR_LINKS);
+	}
+}
+
+static void		mark_matrix(char **table)
+{
+	int	start;
+	int	end;
+	
+	end = -1;
+	start = -1;
+	get_position(table, &start, &end);
 	if (!g_lem_in->matrix[start][end] && !g_lem_in->matrix[end][start])
 	{
 		g_lem_in->matrix[start][end] = TRUE;
 		g_lem_in->matrix[end][start] = TRUE;
 	}
 	else
-		project_free(ERR_LINK_DUPLICATE);
-}
-
-static void		mark_matrix(char **table)
-{
-	int	i;
-	int	end;
-	int	start;
-
-	i = 0;
-	end = -1;
-	start = -1;
-	while ((start == -1 || end == -1) && g_lem_in->names[i])
-	{
-		if (!ft_strcmp(table[0], g_lem_in->names[i]))
-			start = i;
-		if (!ft_strcmp(table[1], g_lem_in->names[i]))
-			end = i;
-		i++;
-	}
-	if (start == -1 || end == -1)
 	{
 		free_words(&table);
-		project_free(ERR_LINKS);
+		project_free(ERR_LINK_DUPLICATE);
 	}
-	mark(start, end);
 }
 
 _Bool			get_link(char *str)
