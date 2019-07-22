@@ -27,6 +27,6 @@ int			main(int ac, char **av)
 	p_kit = set_paths_kit();
 	output(&g_lem_in->data);
 	push_ants(p_kit, g_lem_in->ants);
-	project_free(0);
+	project_free(0, 0);
 	exit(0);
 }

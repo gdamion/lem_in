@@ -28,7 +28,7 @@ static void		parse_ants(char **buffer)
 		add_elem(buffer, &g_lem_in->data);
 	}
 	if (size == -1)
-		project_free(ERR_READING);
+		project_free(ERR_READING, *buffer);
 }
 
 static void		parse_rooms(char **buffer)
@@ -45,16 +45,13 @@ static void		parse_rooms(char **buffer)
 					if (is_link(*buffer))
 						return ;
 					else
-					{
-						ft_strdel(buffer);
-						project_free(ERR_ROOM_PARSING);
-					}
+						project_free(ERR_ROOM_PARSING, *buffer);
 				}
 		add_elem(buffer, &g_lem_in->data);
 		*buffer = 0;
 	}
 	if (size == -1)
-		project_free(ERR_READING);
+		project_free(ERR_READING, *buffer);
 }
 
 static void		parse_links(char **buffer)
@@ -66,15 +63,12 @@ static void		parse_links(char **buffer)
 	{
 		if (!is_comment(*buffer))
 			if (!get_link(*buffer))
-			{
-				ft_strdel(buffer);
-				project_free(ERR_ROOM_PARSING);
-			}
+				project_free(ERR_ROOM_PARSING, *buffer);
 		add_elem(buffer, &g_lem_in->data);
 		*buffer = 0;
 	}
 	if (size == -1)
-		project_free(ERR_READING);
+		project_free(ERR_READING, *buffer);
 }
 
 t_lem_in		*get_anthill(void)
@@ -85,13 +79,13 @@ t_lem_in		*get_anthill(void)
 	init_lem();
 	parse_ants(&buffer);
 	if (g_lem_in->ants < 1)
-		project_free(ERR_NUM_ANTS);
+		project_free(ERR_NUM_ANTS, 0);
 	parse_rooms(&buffer);
 	if (g_lem_in->start == -1 || g_lem_in->end == -1)
-		project_free(ERR_START_END_ROOM);
+		project_free(ERR_START_END_ROOM, 0);
 	g_lem_in->names = set_names(&g_lem_in->nodes);
 	if (!(g_lem_in->status = ft_strnew(g_lem_in->rooms)))
-		project_free(ERR_ALLOC);
+		project_free(ERR_ALLOC, 0);
 	g_lem_in->matrix = init_matrix(g_lem_in->rooms);
 	parse_links(&buffer);
 	return (g_lem_in);

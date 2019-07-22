@@ -14,6 +14,8 @@
 
 _Bool	is_comment(char *str)
 {
+	if (*str == '\0')
+		project_free(ERR_EMPTY_LINE, str);
 	if (str)
 	{
 		if (ft_strlen(str)
@@ -30,7 +32,7 @@ _Bool	is_link(char *str)
 	char			**table;
 
 	if (!(table = ft_strsplit(str, '-')))
-		project_free(ERR_ROOM_PARSING);
+		project_free(ERR_ROOM_PARSING, str);
 	if (row_count(table) == 2)
 	{
 		free_words(&table);
@@ -54,7 +56,7 @@ _Bool	is_command(char *str)
 	return (FALSE);
 }
 
-int		is_integer(char *s)
+int		is_integer(char *s, char *str)
 {
 	char			*new;
 	int				result;
@@ -65,7 +67,10 @@ int		is_integer(char *s)
 	result = ft_strcmp(new, s);
 	free(new);
 	if (result)
-		project_free(ERR_WRONG_NUM);
+	{
+		ft_strdel(&s);
+		project_free(ERR_WRONG_NUM, str);
+	}
 	return (integer);
 }
 

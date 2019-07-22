@@ -62,7 +62,7 @@ t_room		*init_queue(int new_id, int prev_id, t_room *prev, _Bool enter)
 			prev = prev->prev;
 			free(buf);
 		}
-		project_free(ERR_ALLOC);
+		project_free(ERR_ALLOC, 0);
 	}
 	q->next = NULL;
 	q->id = new_id;

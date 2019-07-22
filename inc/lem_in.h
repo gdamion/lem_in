@@ -33,6 +33,7 @@
 # define ERR_NUM_ANTS			"ERROR: Invalid number of ants"
 # define ERR_END_ROOM			"ERROR: More than 1 \"end\" room"
 # define ERR_LINE_INIT			"ERROR: Can\'t initialize line"
+# define ERR_EMPTY_LINE			"ERROR: Empty line"
 # define ERR_MATRIX_INIT		"ERROR: Can\'t initialize matrix"
 # define ERR_START_ROOM			"ERROR: More than 1 \"start\" room"
 # define ERR_ROOM_PARSING		"ERROR: Reading rooms"
@@ -138,20 +139,20 @@ _Bool					is_comment(char *str);
 _Bool					is_command(char *str);
 _Bool					is_link(char *str);
 _Bool					is_int(const char *str, _Bool strict);
-int						is_integer(char *s);
+int						is_integer(char *s, char *str);
 size_t					row_count(char **table);
 _Bool					valid_name(char *str);
 
 _Bool					get_room(char *str);
 _Bool					get_command(char *str);
 _Bool					get_link(char *str);
-void					add_room(char **table, t_rooms **rooms);
+void					add_room(char **table, char *str, t_rooms **rooms);
 void					add_link(char **table, t_links **links);
-void					rooms_duplicate(t_rooms *nodes);
+void					rooms_duplicate(char *str, t_rooms *nodes);
 char					**set_names(t_rooms **nodes);
 
 void					output(t_lst **data);
-int						project_free(char *massage);
+int						project_free(char *message, char *line);
 
 _Bool					is_int(const char *str, _Bool strict);
 int						check_comment(char *s);

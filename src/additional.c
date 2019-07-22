@@ -41,7 +41,7 @@ _Bool		valid_name(char *str)
 void		init_lem(void)
 {
 	if (INIT_LEM_IN)
-		project_free(ERR_LEM_IN_INIT);
+		project_free(ERR_LEM_IN_INIT, 0);
 	ft_bzero(g_lem_in, sizeof(t_lem_in));
 	g_lem_in->start = -1;
 	g_lem_in->end = -1;
@@ -54,14 +54,14 @@ _Bool		**init_matrix(int rooms)
 
 	a = 0;
 	if (!(matrix = (_Bool**)malloc(sizeof(_Bool*) * rooms)))
-		project_free(ERR_LINE_INIT);
+		project_free(ERR_LINE_INIT, 0);
 	while (a < rooms)
 	{
 		if (!(matrix[a] = (_Bool*)malloc(sizeof(_Bool) * rooms)))
 		{
 			while (--a >= 0)
 				free(matrix[a]);
-			project_free(ERR_MATRIX_INIT);
+			project_free(ERR_MATRIX_INIT, 0);
 		}
 		ft_bzero(matrix[a], sizeof(char) * rooms);
 		a++;

@@ -21,7 +21,7 @@ static void		swap_names(char **names, int a, int b)
 	names[b] = temp;
 }
 
-void			rooms_duplicate(t_rooms *nodes)
+void			rooms_duplicate(char *str, t_rooms *nodes)
 {
 	t_rooms		*temp;
 
@@ -29,9 +29,9 @@ void			rooms_duplicate(t_rooms *nodes)
 	while (temp)
 	{
 		if (!ft_strcmp(nodes->name, temp->name))
-			project_free(ERR_ROOM_DUPLICATE);
+			project_free(ERR_ROOM_DUPLICATE, str);
 		if (nodes->x == temp->x && nodes->y == temp->y)
-			project_free(ERR_ROOM_DUPLICATE);
+			project_free(ERR_ROOM_DUPLICATE, str);
 		temp = temp->next;
 	}
 }
@@ -44,7 +44,7 @@ char			**set_names(t_rooms **nodes)
 
 	i = g_lem_in->rooms - 1;
 	if (!(names = ft_wordsnew(g_lem_in->rooms)))
-		project_free(ERR_ALLOC);
+		project_free(ERR_ALLOC, 0);
 	while (i >= 0)
 	{
 		temp = *nodes;
@@ -54,7 +54,10 @@ char			**set_names(t_rooms **nodes)
 		i--;
 	}
 	if (g_lem_in->end > g_lem_in->rooms || g_lem_in->start > g_lem_in->rooms)
-		project_free(ERR_START_END_ROOM);
+	{
+		free_words(&names);
+		project_free(ERR_START_END_ROOM, 0);
+	}
 	swap_names(names, 0, g_lem_in->start - 1);
 	if (g_lem_in->end == 1)
 		g_lem_in->end = g_lem_in->start;

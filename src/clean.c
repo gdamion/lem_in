@@ -56,8 +56,10 @@ static void	free_data(t_lst **data)
 	}
 }
 
-int			project_free(char *message)
+int			project_free(char *message, char *line)
 {
+	if (line)
+		ft_strdel(&line);
 	if (g_np)
 		clean_matrix(&g_np);
 	if (g_mnp)
